@@ -229,7 +229,7 @@ while(True) :
                 pilDel = input("Apakah anda yakin ? (Y/N): ")            
                 if (pilDel.lower() == "y") :
                     if (len(num2) == 0) : 
-                        num = []
+                        num.clear()
                         print("LIST BERHASIL DIHAPUS!")
                         input("Klik Apapun untuk kembali ke Menu...")
                         break
@@ -238,12 +238,12 @@ while(True) :
                         print("2 : ", num2)
                         listDelNum = input("Anda ingin Menghapus List 1 Atau List 2? (1 / 2) :    ")    
                         if (listDelNum == "1") :
-                            num = []
+                            num.clear()
                             print("LIST BERHASIL DIHAPUS!")
                             input("Klik Apapun untuk kembali ke Menu...")
                             break
                         elif (listDelNum == "2") :
-                            num2 = []
+                            num2.clear
                             print("LIST BERHASIL DIHAPUS!")
                             input("Klik Apapun untuk kembali ke Menu...")
                             break
@@ -449,7 +449,7 @@ while(True) :
                 print("||   ", num)
                 print("\\\\=====================================================//\n")
                 input("Klik Apapun untuk kembali ke Menu...")
-                num2 = []
+                num2.clear()
                 break
 
 
