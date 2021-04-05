@@ -243,7 +243,7 @@ while(True) :
                             input("Klik Apapun untuk kembali ke Menu...")
                             break
                         elif (listDelNum == "2") :
-                            num2.clear
+                            num2.clear()
                             print("LIST BERHASIL DIHAPUS!")
                             input("Klik Apapun untuk kembali ke Menu...")
                             break
