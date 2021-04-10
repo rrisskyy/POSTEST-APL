@@ -160,8 +160,10 @@ class Barang:
         self.stok = stok
 
     def tambahBarang(self) :
-        param = f"INSERT INTO `tokopancing` (`id`, `jenis`, `brand`, `varian`, `warna`, `harga`, `stok`) VALUES ({self.id}, {self.jenis}, {self.brand}, {self.varian}, {self.warna}, {self.harga}, {self.stok})"
-        query(param)
+        param = "INSERT INTO `tokopancing` (`id`, `jenis`, `brand`, `varian`, `warna`, `harga`, `stok`) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        val = (self.id, self.jenis, self.brand, self.varian, self.warna, self.harga, self.stok)
+        mycursor.execute(param, val)
+        conn.commit()
         print("Berhasil!!")
 
     def tambahStok(self) :
