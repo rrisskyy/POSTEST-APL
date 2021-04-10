@@ -131,11 +131,13 @@ def barangKosong(items):
 
 
 def cari(items) :   
-    keyword = input("Ketikkan Sesuatu Untuk Mencari :     ") 
+    keyword = input("\n\nKetikkan Sesuatu Untuk Mencari :     ") 
     param = f"SELECT * FROM tokopancing WHERE `jenis` LIKE '%{keyword}%' OR `brand` LIKE '%{keyword}%' OR `varian` LIKE '%{keyword}%' OR `warna` LIKE '%{keyword}%'"
     equalItems = query(param)
     clr()
+    print(f"\n\n\nHasil Pencarian {keyword} : ")
     daftarBarang(equalItems)
+    
 
 
 def orderby(keyword, item):
@@ -320,11 +322,17 @@ def menu():
         menu()       
     if (pil == "9"):
         clr()
-        print("1. JENIS")
-        print("2. BRAND")
-        print("3. WARNA")
-        print("4. VARIAN")
-        print("5. HARGA")
+        print("//=======================================================================================\\\\")
+        print("||                                                                                       ||")
+        print("||                                                                                       ||")
+        print("||   1.  Urutkan Berdasarkan Jenis                                                       ||")      # ✔
+        print("||   2.  Urutkan Berdasarkan Brand                                                       ||")      # ✔
+        print("||   3.  Urutkan Berdasarkan Warna                                                       ||")      # ✔
+        print("||   4.  Urutkan Berdasarkan Varian                                                      ||")      # ✔
+        print("||   5.  Urutkan Berdasarkan Harga                                                       ||")      
+        print("||                                                                                       ||")
+        print("||                                                                                       ||")      
+        print("\\\\=========================================================================+=============//\n")
 
         pilCari = input("ANDA INGIN MENGURUTKAN BERDASARKAN : ")
         orderby(pilCari.lower(), items)
