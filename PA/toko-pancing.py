@@ -166,7 +166,7 @@ class Barang:
 
     def tambahStok(self) :
         stokBaru = int(input("Masukkan Jumlah Stok :    "))
-        stokBaru += self.id
+        stokBaru += self.stok
         param = f"UPDATE `tokopancing` SET `stok` = {stokBaru} WHERE id = {self.id}"
         query(param)
         print("Berhasil!!")
