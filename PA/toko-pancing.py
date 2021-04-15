@@ -7,6 +7,9 @@ mycursor = conn.cursor()
 COLUMN = 7
 
 
+
+
+
 def query(query):
     mycursor.execute(query)
     items = mycursor.fetchall()
@@ -15,7 +18,6 @@ def query(query):
 
   
 items = query("SELECT * FROM tokopancing ORDER BY harga")
-
 # "id": item[0][0],
 # "jenis": item[0][1],
 # "brand": item[0][2],
@@ -25,10 +27,6 @@ items = query("SELECT * FROM tokopancing ORDER BY harga")
 # "stok": item[0][6],
 
 
-
-
-
-
 def clr():
    if os.name == 'posix':
       _ = os.system('clear')
@@ -36,48 +34,30 @@ def clr():
       _ = os.system('cls')
 
 def header():
-    return ("+_____________________________________________________________________________________________________________________________________________________+\n" + "|____________ID__________JENIS________BRAND____________________VARIAN___________________WARNA_________HARGA__________STOK__________NO_SERI____________|")
+    return ("+____________________________________________________________________________________________________________________________________________________+\n" 
+    + "|____ID_____|_______JENIS_______|__________BRAND__________|__________VARIAN__________|______WARNA______|______HARGA_______|___STOK___|____NO_SERI____|")
 def footer():
-    return ("+_____________________________________________________________________________________________________________________________________________________+")
+    return ("+___________+___________________+_________________________+__________________________+_________________+__________________+__________+_______________+")
+
+
+
+
 
 def spacing (item, i):
-    if ( i > 99 &  i < 999 ) : 
-        a = "|            [" + str(i+1) + "]     "
-    if ( i >= 9 &  i < 99 ) : 
-        a = "|            [" + str(i+1) + "]        "
-    if ( i < 9 ) : 
-        a = "|            [" + str(i+1) + "]         "
-    
-    
-    def minus(j, gd, a):
-        minus = 87 - len(a)
-        while(minus > gd) :
-                a += " "
-                minus-=1
-        a += str(item[i][j])
-        return a
+    a = ''
+    if i < 9 :
+        a = "|".ljust(3) + "[" + str(i+1) + "] ".ljust(7) + "|".ljust(3)
+    if i >= 9:
+        a = "|".ljust(3) + "[" + str(i+1) + "] ".ljust(6) + "|".ljust(3)
+    a += str(item[i][1]).ljust(17) + "|".ljust(3)
+    a += str(item[i][2]).ljust(23) + "|".ljust(3)
+    a += str(item[i][3]).ljust(24) + "|".ljust(3)
+    a += str(item[i][4]).ljust(15) + "|".ljust(3)
+    a += "Rp. "+ str(item[i][5]).ljust(12) + "|".ljust(4)
+    a += str(item[i][6]).ljust(7) + "|".ljust(3)
+    a += str(item[i][0]).ljust(13) + "|".ljust(3)
 
-    # JENIS
-    a = minus(1, 90, a)
-    # BRAND
-    a = minus(2, 49, a)
-    # VARIAN
-    a = minus(3, 24, a)
-    # WARNA
-    a = minus(4, -1, a)
-    # HARGA
-    a = minus(5, -15, a)
-    # STOK
-    a = minus(6, -31, a)
-    # NO SERI
-    a = minus(0, -46, a)
-    while (len(a) < 151 ):
-        a += " "
-        if (len(a) == 150):
-            a += "|"
     return a
-
-
 
 
 
@@ -201,21 +181,31 @@ class Barang:
 
 
 def menu():
+    items = query("SELECT * FROM tokopancing ORDER BY harga")
+    # "id": item[0][0],
+    # "jenis": item[0][1],
+    # "brand": item[0][2],
+    # "varian": item[0][3],
+    # "warna": item[0][4],
+    # "harga": item[0][5],
+    # "stok": item[0][6],
     clr()
-    print("\n\n\t  SELAMAT DATANG DI TOKO PANCING")
+    print("SELAMAT DATANG DI TOKO PANCING".rjust(39))
     print("//=======================================================================================\\\\")
-    print("||   1.  Pembayaran                                                                      ||")      # ✔
-    print("||   2.  Lihat Daftar Barang                                                             ||")      # ✔
-    print("||   3.  Lihat Barang Yang Masih Tersedia                                                ||")      # ✔
-    print("||   4.  Lihat Barang Yang Kehabisan STOK                                                ||")      # ✔
-    print("||   5.  Tambahkan Barang                                                                ||")      # ✔
-    print("||   6.  Ubah Harga Barang                                                               ||")      # ✔
-    print("||   7.  Hapus Barang                                                                    ||")      # ✔
-    print("||   8.  Cari Barang                                                                     ||")      # ✔
-    print("||   9.  Urutkan Barang                                                                  ||")         
-    print("||   10. Tambah STOK                                                                     ||")         
-    print("||   0.  Exit                                                                            ||")      
-    print("\\\\=========================================================================+=============//\n")
+    print("||                                                                                       ||")
+    print("||       1.  Pembayaran                                                                  ||")      # ✔
+    print("||       2.  Lihat Daftar Barang                                                         ||")      # ✔
+    print("||       3.  Lihat Barang Yang Masih Tersedia                                            ||")      # ✔
+    print("||       4.  Lihat Barang Yang Kehabisan STOK                                            ||")      # ✔
+    print("||       5.  Tambahkan Barang                                                            ||")      # ✔
+    print("||       6.  Ubah Harga Barang                                                           ||")      # ✔
+    print("||       7.  Hapus Barang                                                                ||")      # ✔
+    print("||       8.  Cari Barang                                                                 ||")      # ✔
+    print("||       9.  Urutkan Barang                                                              ||")         
+    print("||       10. Tambah STOK                                                                 ||")         
+    print("||       0.  Exit                                                                        ||")
+    print("||                                                                                       ||")      
+    print("\\\\=======================================================================================//\n")
     pil = input("Pilih Menu >>  ")
 
 
