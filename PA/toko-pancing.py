@@ -62,12 +62,12 @@ def spacing (item, i):
 
 
 
-def pembayaran(id, jenis, brand, varian, warna, harga, stok, totalHarga):
+def pembayaran(id, jenis, brand, varian, warna, harga, stok, totalHarga, count):
     result = query(f"SELECT * FROM tokopancing WHERE `id` = {id}")
-    count = int(input("Berapa Buah? :   "))
     harga = result[0][5] * count
     totalHarga += harga
     print("Harga Barang  =  ", result[0][5], " x ", count, "  =  ", harga)
+    
     return totalHarga
         
 
@@ -222,9 +222,12 @@ def menu(param):
         while(True) : 
             pil = int(input("\nMasukkan ID Barang  >>>        "))
             pil -= 1
-            if(pil == -1) :
+            if (pil != -1):
+                count = int(input("Berapa Buah? :   "))
+            elif (pil == -1) :
                 print(f"Total Harga : {totalHarga}")
                 break
+            
             kwargs = {
                 "id": items[pil][0],
                 "jenis": items[pil][1],
@@ -233,9 +236,15 @@ def menu(param):
                 "warna": items[pil][4],
                 "harga": items[pil][5],
                 "stok": items[pil][6],
-                "totalHarga": totalHarga
+                "totalHarga": totalHarga,
+                "count": count
                 }
-            totalHarga += pembayaran(**kwargs)
+            newStok = kwargs["stok"] - kwargs["count"]
+            updatingStok = f'UPDATE tokopancing SET stok = {newStok} WHERE id = {kwargs["id"]}'
+            
+            mycursor.execute(updatingStok)
+            conn.commit()
+            totalHarga += pembayaran(**kwargs)  
         input("\n\n\nTekan Enter Untuk Kembali ...")
         menu(param)
     if (pil == "2"):
@@ -326,7 +335,7 @@ def menu(param):
         print("||                                                                                       ||")      
         print("\\\\=========================================================================+=============//\n")
 
-        pilCari = input("ANDA INGIN MENGURUTKAN BERDASARKAN : ")
+        pilCari = input("ANDA INGIN MENGURUTKAN BERDASARKAN : ")    
         orderby(pilCari.lower(), items)
         input("\n\n\nTekan Enter Untuk Kembali ...")
         menu(param)
