@@ -16,8 +16,9 @@ def query(query):
     conn.commit()
     return items
 
-  
-items = query("SELECT * FROM tokopancing ORDER BY harga")
+param = "harga"  
+items = query("SELECT * FROM tokopancing ORDER BY " + param)
+
 # "id": item[0][0],
 # "jenis": item[0][1],
 # "brand": item[0][2],
@@ -34,10 +35,10 @@ def clr():
       _ = os.system('cls')
 
 def header():
-    return ("+____________________________________________________________________________________________________________________________________________________+\n" 
-    + "|____ID_____|_______JENIS_______|__________BRAND__________|__________VARIAN__________|______WARNA______|______HARGA_______|___STOK___|____NO_SERI____|")
+    return (" ____________________________________________________________________________________________________________________________________________________\n" 
+          + "|____ID_____|_______JENIS_______|__________BRAND__________|__________VARIAN__________|______WARNA______|______HARGA_______|___STOK___|____NO_SERI____|")
 def footer():
-    return ("+___________+___________________+_________________________+__________________________+_________________+__________________+__________+_______________+")
+    return ("⊥___________⊥___________________⊥_________________________⊥__________________________⊥_________________⊥__________________⊥__________⊥_______________⊥")
 
 
 
@@ -126,6 +127,7 @@ def orderby(keyword, item):
     item = query(param)
     items = item
     daftarBarang(items)
+    menu(keyword)
 
 
 
@@ -168,7 +170,7 @@ class Barang:
             query(param)
             print("Berhasil!!")
         elif (yakin.upper() == "N") :
-            menu()
+            exit
         else :
             print("Input yang anda Masukkan SALAH!")
 
@@ -180,8 +182,8 @@ class Barang:
 
 
 
-def menu():
-    items = query("SELECT * FROM tokopancing ORDER BY harga")
+def menu(param):
+    items = query("SELECT * FROM tokopancing ORDER BY " + param)
     # "id": item[0][0],
     # "jenis": item[0][1],
     # "brand": item[0][2],
@@ -235,22 +237,22 @@ def menu():
                 }
             totalHarga += pembayaran(**kwargs)
         input("\n\n\nTekan Enter Untuk Kembali ...")
-        menu()
+        menu(param)
     if (pil == "2"):
         clr()
         daftarBarang(items)
         input("\n\n\nTekan Enter Untuk Kembali ...")
-        menu()
+        menu(param)
     if (pil == "3"):
         clr()
         barangTersedia(items)
         input("\n\n\nTekan Enter Untuk Kembali ...")
-        menu()
+        menu(param)
     if (pil == "4"):
         clr()
         barangKosong(items)
         input("\n\n\nTekan Enter Untuk Kembali ...")
-        menu()
+        menu(param)
     if (pil == "5"):
         jenis = input("Masukkan Jenis Barang :   ")
         brand = input("Masukkan Merk Barang :    ")
@@ -261,7 +263,7 @@ def menu():
         barang = Barang(None, jenis, brand, varian, warna, harga, stok)
         barang.tambahBarang()
         input("\n\n\nTekan Enter Untuk Kembali ...")
-        menu()
+        menu(param)
     if (pil == "6"):
         clr()
         daftarBarang(items)
@@ -282,7 +284,7 @@ def menu():
         barang = Barang(**kwargs)
         barang.ubahHargaBarang()
         input("\n\n\nTekan Enter Untuk Kembali ...")
-        menu()
+        menu(param)
     if (pil == "7"):
         clr()
         daftarBarang(items)
@@ -303,13 +305,13 @@ def menu():
         barang = Barang(**kwargs)
         barang.hapusBarang()
         input("\n\n\nTekan Enter Untuk Kembali ...")
-        menu()
+        menu(param)
     if (pil == "8"):
         clr()
         daftarBarang(items)
         cari(items)
         input("\n\n\nTekan Enter Untuk Kembali ...")
-        menu()       
+        menu(param)       
     if (pil == "9"):
         clr()
         print("//=======================================================================================\\\\")
@@ -327,7 +329,7 @@ def menu():
         pilCari = input("ANDA INGIN MENGURUTKAN BERDASARKAN : ")
         orderby(pilCari.lower(), items)
         input("\n\n\nTekan Enter Untuk Kembali ...")
-        menu()
+        menu(param)
     if (pil == "10"):
         clr()
         daftarBarang(items)
@@ -347,8 +349,8 @@ def menu():
         barang = Barang(**kwargs)
         barang.tambahStok()
         input("\n\n\nTekan Enter Untuk Kembali ...")
-        menu()
+        menu(param)
     if (pil == "0"):
         print("TERIMA KASIH TELAH MENGGUNAKAN PROGRAM!!!")
         exit
-menu()
+menu(param)
