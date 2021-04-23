@@ -8,4 +8,4 @@
 8. REKRUSIF ✅
 
 
-Kalau ada yang mau ditanyakan, chat Risky
+*Kalau ada yang mau ditanyakan, chat Risky*
