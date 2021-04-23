@@ -1,12 +1,15 @@
 import os
 from datetime import datetime
+from matplotlib import pyplot as plt
 import mysql.connector
+import webbrowser
+from os import environ
+
+
+
 
 conn = mysql.connector.connect( host="localhost", user="root", password="", database="toko-pancing" )
 mycursor = conn.cursor()
-
-items = []
-now = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
 
 def clr():
    _ = os.system('clear') if os.name == 'posix' else os.system('cls')
@@ -17,9 +20,29 @@ def query(query):
     conn.commit()
     return items
 
+
+
+
+
+def suppress_qt_warnings():
+    environ["QT_DEVICE_PIXEL_RATIO"] = "0"
+    environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    environ["QT_SCREEN_SCALE_FACTORS"] = "1"
+    environ["QT_SCALE_FACTOR"] = "1"
+
+
+
+
+
+items = []
+now = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
+
+
+
 def back_to_menu():
     input("\n\n\nTekan Enter Untuk Kembali ...")
     menu(param)
+
 
 
 param = "harga"  
@@ -42,23 +65,29 @@ terjual = query("SELECT * FROM terjual ORDER BY jumlah")
 
 def header():
     return (" ____________________________________________________________________________________________________________________________________________________\n" 
-           + "|____ID_____|_______JENIS_______|__________BRAND__________|__________VARIAN__________|______WARNA______|______HARGA_______|___STOK___|____NO_SERI____|")
+          + "|____ID_____|_______JENIS_______|__________BRAND__________|__________VARIAN__________|______WARNA______|______HARGA_______|___STOK___|____NO_SERI____|")
 def footer():
     return ("⊥___________⊥___________________⊥_________________________⊥__________________________⊥_________________⊥__________________⊥__________⊥_______________⊥")
 
 
 def header1():
     return (" ________________________________________________________________________________________________________________________________________________________________________________________\n" 
-           + "|__ID___|_____First Name_____|_____Last Name_____|_____________E-mail____________|__Phone Number___|_______________________________________Address_______________________________________|")
+        +   "|__ID___|_____First Name_____|_____Last Name_____|_____________E-mail____________|__Phone Number___|_______________________________________Address_______________________________________|")
 def footer1():
     return ("⊥_______⊥____________________⊥___________________⊥_______________________________⊥_________________⊥_____________________________________________________________________________________⊥")
 
 
 def header2():
     return (" ____________________________________________________________________________________________________________________________________________________________________\n" 
-           + "|___ID____|_____JENIS______|________BRAND________|________VARIAN________|______WARNA______|______HARGA_______|_______MODAL______|__JUMLAH__|_________Tanggal_________|")
+         +  "|_________|_____JENIS______|________BRAND________|________VARIAN________|______WARNA______|______HARGA_______|_______MODAL______|__JUMLAH__|_________Tanggal_________|")
 def footer2():
     return ("⊥_________⊥________________⊥_____________________⊥______________________⊥_________________⊥__________________⊥__________________⊥__________⊥_________________________⊥")
+
+def header3():
+    return (" ___________________________________________________________________________________________\n" 
+        +   "|_____JENIS______|________BRAND________|________VARIAN________|______HARGA_______|__JUMLAH__|")
+def footer3():
+    return ("⊥________________⊥_____________________⊥______________________⊥__________________⊥__________⊥")
 
 
 
@@ -75,22 +104,6 @@ def spacing (item, i):
     a += str(item[i][5]).ljust(12) + "|".ljust(4)
     a += str(item[i][7]).ljust(7)  + "|".ljust(7)
     a += str(item[i][0]).ljust(9)  + "|".ljust(3)
-    return a
-
-def spacing2 (item, i):
-    a = ''
-    if i < 9 :
-        a = "|".ljust(3) + "[" + str(i+1) + "] ".ljust(5) + "|".ljust(3)
-    if i >= 9:
-        a = "|".ljust(3) + "[" + str(i+1) + "] ".ljust(4) + "|".ljust(3)
-    a += str(item[i][1]).ljust(14) + "|".ljust(3)
-    a += str(item[i][2]).ljust(19) + "|".ljust(3)
-    a += str(item[i][3]).ljust(20) + "|".ljust(3)
-    a += str(item[i][4]).ljust(15) + "|".ljust(3) + "Rp. "
-    a += str(item[i][5]).ljust(12) + "|".ljust(3) + "Rp. "
-    a += str(item[i][6]).ljust(12) + "|".ljust(5)
-    a += str(item[i][7]).ljust(6)  + "|".ljust(3)
-    a += str(item[i][8]).ljust(23)  + "|".ljust(3)
     return a
 
 
@@ -110,8 +123,30 @@ def spacing1 (item, i):
 
 
 
+def spacing2 (item, i):
+    a = ''
+    if i < 9 :
+        a = "|".ljust(3) + "[" + str(i+1) + "] ".ljust(5) + "|".ljust(3)
+    if i >= 9:
+        a = "|".ljust(3) + "[" + str(i+1) + "] ".ljust(4) + "|".ljust(3)
+    a += str(item[i][1]).ljust(14) + "|".ljust(3)
+    a += str(item[i][2]).ljust(19) + "|".ljust(3)
+    a += str(item[i][3]).ljust(20) + "|".ljust(3)
+    a += str(item[i][4]).ljust(15) + "|".ljust(3) + "Rp. "
+    a += str(item[i][5]).ljust(12) + "|".ljust(3) + "Rp. "
+    a += str(item[i][6]).ljust(12) + "|".ljust(5)
+    a += str(item[i][7]).ljust(6)  + "|".ljust(3)
+    a += str(item[i][8]).ljust(23)  + "|".ljust(3)
+    return a
 
-
+def spacing3 (item, i):
+    a = '|'.ljust(3)
+    a += str(item[i][0]).ljust(14) + "|".ljust(3)
+    a += str(item[i][1]).ljust(19) + "|".ljust(3)
+    a += str(item[i][2]).ljust(20) + "|".ljust(3) + "Rp. "
+    a += str(item[i][3]).ljust(12) + "|".ljust(5)
+    a += str(item[i][4]).ljust(6)  + "|".ljust(3)
+    return a
 
 def pembayaran(id, jenis, brand, varian, warna, harga, stok, totalHarga, count):
     result = query(f"SELECT * FROM barang WHERE `id` = {id}")
@@ -136,13 +171,23 @@ def daftarBarang(items):
         print(spacing(items, i))
     print(footer())
 
+
+
 def daftarBarang1(items):
     print("\nHistory Penjualan : \n")
     print(header2())
     for i in range(len(items)) :
         print(spacing2(items, i))
     print(footer2())
+
+def daftarBarang2(items):
+    print("\nStruk : \n")
+    print(header3())
+    for i in range(len(items)) :
+        print(spacing3(items, i))
+    print(footer3())
         
+
 
 
 def daftarOrang(items):
@@ -150,6 +195,7 @@ def daftarOrang(items):
     for i in range(len(items)) :
         print(spacing1(items, i))
     print(footer1())        
+
 
 
 def cari(items) :  
@@ -167,6 +213,49 @@ def cari(items) :
 
     
 
+def mergeSort(arr):
+    
+	
+	if len(arr) > 1:
+
+		# DIV
+		mid = len(arr)//2
+
+        # 0 ~ MID
+		L = arr[:mid]
+        # MID ~ LEN-1
+		R = arr[mid:]
+
+        # REKRUSIF
+		mergeSort(L)
+		mergeSort(R)
+
+
+		i = j = k = 0
+
+		while i < len(L) and j < len(R):
+			if L[i][3] < R[j][3]:
+				arr[k] = L[i]
+				i += 1
+			else:
+				arr[k] = R[j]
+				j += 1
+			k += 1
+
+		# Kiri
+		while i < len(L):
+			arr[k] = L[i]
+			i += 1
+			k += 1
+
+        # Kanan
+		while j < len(R):
+			arr[k] = R[j]
+			j += 1
+			k += 1
+        
+
+
 
 def orderby(keyword, item):
     global items
@@ -175,8 +264,6 @@ def orderby(keyword, item):
     items = item
     daftarBarang(items)
     return keyword
-
-
 
 
 
@@ -223,6 +310,7 @@ class Barang:
             print("Input yang anda Masukkan SALAH!")
 
 
+
 class Orang:
 
     def __init__(self, id, first_name, last_name, address, email, phone_number) :
@@ -257,31 +345,31 @@ class Orang:
                 query(param1)
                 print("Berhasil!!")
                 break
-            if (pil == "2"):
+            elif (pil == "2"):
                 newLastName = (input("Masukkan First Name Baru :    "))
                 param1 = "UPDATE barang SET last_name = {} WHERE id = {}".format(newLastName, self.id)
                 query(param1)
                 print("Berhasil!!")
                 break
-            if (pil == "3"):
+            elif (pil == "3"):
                 newAddress = (input("Masukkan First Name Baru :    "))
                 param1 = "UPDATE barang SET address = {} WHERE id = {}".format(newAddress, self.id)
                 query(param1)
                 print("Berhasil!!")
                 break
-            if (pil == "4"):
+            elif (pil == "4"):
                 newEmail = (input("Masukkan First Name Baru :    "))
                 param1 = "UPDATE barang SET email = {} WHERE id = {}".format(newEmail, self.id)
                 query(param1)
                 print("Berhasil!!")
                 break
-            if (pil == "5"):
+            elif (pil == "5"):
                 newPhoneNumber = (input("Masukkan First Name Baru :    "))
                 param1 = "UPDATE barang SET phone_number = {} WHERE id = {}".format(newPhoneNumber, self.id)
                 query(param1)
                 print("Berhasil!!")
                 break
-            if(pil == "0"):
+            elif(pil == "0"):
                 menu(param)
 
             else:
@@ -290,6 +378,7 @@ class Orang:
                 daftarOrang(costumers)
                 self.ubah()
             
+
 
     def hapusOrang(self) :
         yakin = input("Apakah anda yakin ingin menghapus Orang ini (Y/N) ? :    ")
@@ -313,16 +402,16 @@ class Orang:
 def menu(param):
     items = query("SELECT * FROM barang ORDER BY " + param)
     costumers = query("SELECT * FROM costumers ORDER BY first_name")
-    terjual = query("SELECT * FROM terjual ORDER BY jumlah")
+    terjual = query("SELECT * FROM terjual ORDER BY date")
     clr()
     print("".rjust(39))
     print(" _______________________________________________________________________________________")
     print("|                                                     SELAMAT DATANG DI TOKO PANCING    |")
     print("|       1.  Admin                                                                       |")      
-    print("|       2.  Daftar Barang                                                               |")      
+    print("|       2.  Lihat Daftar Barang                                                         |")      
     print("|       3.  Urutkan Barang                                                              |")      
-    print("|       4.  Cari Barang                                                                 |")      
-    print("|       5.  Laporan Penjualan                                                           |")      
+    print("|       4.  Cari Barang                                                                 |")         
+    print("|       5.  Hubungi Admin                                                               |")         
     print("|                                                                                       |")   
     print("|       0.  Exit                                                                        |")
     print("|                                                                                       |")   
@@ -358,22 +447,19 @@ def menu(param):
 
         if (pil == "1"):
             clr()
-
+            daftarBeli = []
+            jumlahBeli = []
             stokTersedia = "SELECT * FROM barang WHERE stok != 0 ORDER BY " + param
             items = query(stokTersedia)
             daftarBarang(items)
             totalHarga = 0
 
-            print("\nMasukkan Barang Yang Dibeli! ")
-            print("Masukkan Angka 0 Jika Semua Barang Yang dibeli sudah dimasukkan")
+            print("\nMasukkan Barang Yang Dibeli : ")
+            # print("Masukkan Angka 0 Jika Semua Barang Yang dibeli sudah dimasukkan")
             while(True) : 
                 pil = int(input("\nMasukkan ID Barang  >>>        "))
                 pil -= 1
-                if (pil != -1):
-                    count = int(input("Berapa Buah? :   "))
-                elif (pil == -1) :
-                    print(f"Total Harga : {totalHarga}")
-                    break
+                count = int(input("Berapa Buah? :   "))
                 
                 kwargs = {
                     "id": items[pil][0],
@@ -386,6 +472,8 @@ def menu(param):
                     "totalHarga": totalHarga,
                     "count": count
                     }
+                
+                daftarBeli.append((kwargs["jenis"], kwargs["brand"], kwargs["varian"], kwargs["harga"] * kwargs["count"], kwargs["count"]))
                 newStok = kwargs["stok"] - kwargs["count"]
                 if (kwargs["stok"] < kwargs["count"]) :
                     beli = input(f"Barang yang tersedia tidak cukup, Maukah anda membeli sebanyak {kwargs['stok']} (Y/N) ?")
@@ -393,77 +481,93 @@ def menu(param):
                         newStok = kwargs["stok"]
                     elif beli.upper() == "N":
                         break
+                
                 updatingStok = f'UPDATE barang SET stok = {newStok} WHERE id = {kwargs["id"]}'
                 mycursor.execute(updatingStok)
                 conn.commit()
                 totalHarga += pembayaran(**kwargs)  
+                
+                # ===================================================================================================================================================================================================================================================================
+                ulang = input("Apakah Anda ingin membeli yang lain? (Y/N) : ")
+                if (ulang.upper() == "Y"):
+                    continue
+                elif(ulang.upper() == "N"):
+                    while(True):
+                        print(f"Total Harga : {totalHarga}")
+                        uang = int(input("Berapa Uang Yang Dibayarkan:    ")) 
+                        result = uang - totalHarga
+                        if (result == 0):
+                            print("Uang Yang Dibayarkan Pas!")
+                            break
+                        elif (result < 0):
+                            print("Uang Yang Dibayarkan Tidak Cukup Mohon Tambah Lagi!")
+                            print(f"Uang Kurang {abs(result)}")
+                            continue
+
+                        elif (result > 0):
+                            print(f"Uang Yang Dibayarkan Lebih, ini adalah Kembaliannya :    {result}")
+                            break
+                    break
+                # ===================================================================================================================================================================================================================================================================
+
+            mergeSort(daftarBeli)    
+            daftarBarang2(daftarBeli)        
             back_to_menu()
 
 
 
-        if (pil == "2") :
+        elif (pil == "2") :
             clr()
             print(" _______________________________________________________________________________________") 
-            print("|                                                                  Laporan Penjualan    |")             
-            print("|    1.  Bulan Ini                                                                      |")      
-            print("|    2.  Tahun Ini                                                                      |")      
+            print("|                                                        Laporan Penjualan Bulan ini    |")             
+            print("|    1.  Lihat Grafik Penjualan Bulan Ini                                               |")      
+            print("|    2.  Lihat Barang Yang Terjual                                                      |")      
+            print("|    3.  Lihat Keuntungan Bulan Ini                                                     |")      
             print("|                                                                                       |")   
             print("|                                                                                       |")    
             print("|_______________________________________________________________________________________|") 
             pil = input(" Pilih Menu >>  ")
-
-
+            
             if (pil == "1"):
-                clr()
-                print(" _______________________________________________________________________________________") 
-                print("|                                                        Laporan Penjualan Bulan ini    |")             
-                print("|    1.  Lihat Grafik Penjualan Bulan Ini                                               |")      
-                print("|    2.  Lihat Barang Yang Terjual                                                      |")      
-                print("|    3.  Lihat Keuntungan Bulan Ini                                                     |")      
-                print("|                                                                                       |")   
-                print("|                                                                                       |")    
-                print("|_______________________________________________________________________________________|") 
-                pil = input(" Pilih Menu >>  ")
+                suppress_qt_warnings()
+                mycursor.execute("SELECT SUM(harga) FROM terjual")
+                untung = mycursor.fetchone()[0]
+                mycursor.execute("SELECT SUM(modal) FROM terjual")
+                modal = mycursor.fetchone()[0]
                 
-                if (pil == "1"):
-                    pass
-                if (pil == "2"):
-                    clr()
-                    daftarBarang1(terjual)
-                    back_to_menu()
+                fig = plt.figure("Keuntungan Bulan Ini")
 
-                if (pil == "3"):
-                    clr()
-                    daftarBarang1(terjual)
-                    mycursor.execute("SELECT SUM(harga) FROM terjual")
-                    untung = mycursor.fetchone()[0]
-                    print(f"\n\nTotal Pendapatan Bulan Ini adalah :   {untung}")
-                    mycursor.execute("SELECT SUM(modal) FROM terjual")
-                    modal = mycursor.fetchone()[0]
-                    print(f"\nModal Untuk Barang Yang Terjual Adalah :   {modal}")
-                    print("\n\nKeuntungan Bulan Ini adalah :   ", untung - modal)
-                    back_to_menu()
-                
+                x = []
+                y = []
+                mycursor.execute("SELECT jenis, SUM(harga - modal) FROM terjual GROUP BY jenis")
+                group = mycursor.fetchall()
+                for i in range(len(group)):
+                    x.append(group[i][0])
+                    y.append(group[i][1])
+                plt.bar(x,y, color = ['#15FA00'])
+                plt.title(f'Keuntungan Bulan Ini: Rp. {untung - modal}')
+                plt.show()
+                back_to_menu()
+
             elif (pil == "2"):
                 clr()
-                print(" _______________________________________________________________________________________") 
-                print("|                                                         Laporan Penjualan Tahun ini   |")             
-                print("|    1.  Lihat Grafik Penjualan Tahun Ini                                               |")      
-                print("|    2.  Lihat Barang Yang Terjual                                                      |")      
-                print("|    3.  Lihat Keuntungan Tahun Ini                                                     |")      
-                print("|                                                                                       |")   
-                print("|                                                                                       |")    
-                print("|_______________________________________________________________________________________|") 
-                pil = input(" Pilih Menu >>  ")
+                daftarBarang1(terjual)
+                back_to_menu()
 
-                if (pil == "1"):
-                    pass
-                if (pil == "2"):
-                    pass
-                if (pil == "3"):
-                    pass
-
-        if (pil == "3") :
+            elif (pil == "3"):
+                clr()
+                daftarBarang1(terjual)
+                mycursor.execute("SELECT SUM(harga) FROM terjual")
+                untung = mycursor.fetchone()[0]
+                print(f"\n\n      Total Penjualan Bulan Ini adalah :   Rp. {untung}")
+                mycursor.execute("SELECT SUM(modal) FROM terjual")
+                modal = mycursor.fetchone()[0]
+                print(f"Modal Untuk Barang Yang Terjual Adalah :   Rp. {modal}")
+                print("_____________________________________________________  _ ")
+                print("\n           Keuntungan Bulan Ini adalah :   Rp.", untung - modal)
+                back_to_menu()
+                
+        elif (pil == "3") :
             clr()
             print(" _______________________________________________________________________________________") 
             print("|                                                                     Data Pelanggan    |")             
@@ -533,14 +637,14 @@ def menu(param):
                 orang.hapusOrang()
                 back_to_menu()
 
-        if (pil == "4") :
+        elif (pil == "4") :
             clr()
 
             daftarBarang(items)
             back_to_menu()
 
 
-        if (pil == "5") :
+        elif (pil == "5") :
             jenis = input("Masukkan Jenis Barang :   ")
             brand = input("Masukkan Merk Barang :    ")
             varian = input("Masukkan Varian Barang :  ")
@@ -556,7 +660,7 @@ def menu(param):
 
         
         
-        if (pil == "6") :
+        elif (pil == "6") :
             clr()
             daftarBarang(items)
 
@@ -579,7 +683,7 @@ def menu(param):
             back_to_menu()
 
 
-        if (pil == "7") :
+        elif (pil == "7") :
             clr()
             daftarBarang(items)
             pil = int(input("\nPilihlah Barang Yang Harganya Ingin anda ubah (ID) :      "))
@@ -599,7 +703,7 @@ def menu(param):
             barang.ubahHargaBarang()
             back_to_menu()
 
-        if (pil == "8") :
+        elif (pil == "8") :
             clr()
             daftarBarang(items)
 
@@ -622,7 +726,7 @@ def menu(param):
             back_to_menu()
 
 
-        if (pil == "0"):
+        elif (pil == "0"):
             print("Terima Kasih Telah Menggunakan Program Ini (●'◡'●)つ !!!")
             exit
 
@@ -656,7 +760,7 @@ def menu(param):
             back_to_menu()
             
             
-        if (pil == "2") :
+        elif (pil == "2") :
             clr()
 
             stokTersedia = "SELECT * FROM barang WHERE stok != 0 ORDER BY " + param
@@ -665,7 +769,7 @@ def menu(param):
             back_to_menu()
 
 
-        if (pil == "3") :
+        elif (pil == "3") :
             clr()
 
             stokKosong = "SELECT * FROM barang WHERE stok = 0 ORDER BY " + param
@@ -675,7 +779,7 @@ def menu(param):
 
 
 
-        if (pil == "4") :
+        elif (pil == "4") :
             clr()
             
             daftarBarang(items)
@@ -683,7 +787,7 @@ def menu(param):
             back_to_menu() 
 
 
-        if (pil == "5") :
+        elif (pil == "5") :
             clr()
             print(" _______________________________________________________________________________________") 
             print("|                                                                        Urut Barang    |")            
@@ -699,20 +803,20 @@ def menu(param):
             pilCari = input("\n\tAnda ingin Mengurutkan Berdasarkan : ")    
             
             if (pilCari == "1"): pilCari = "Jenis"
-            if (pilCari == "2"): pilCari = "Brand"
-            if (pilCari == "3"): pilCari = "Warna"
-            if (pilCari == "4"): pilCari = "Varian"
-            if (pilCari == "5"): pilCari = "Harga"
+            elif (pilCari == "2"): pilCari = "Brand"
+            elif (pilCari == "3"): pilCari = "Warna"
+            elif (pilCari == "4"): pilCari = "Varian"
+            elif (pilCari == "5"): pilCari = "Harga"
 
             key = orderby(pilCari.lower(), items)
             input("\n\n\nTekan Enter Untuk Kembali ...")
             menu(key)
 
 
-        if (pil == "0"):
+        elif (pil == "0"):
             menu(param)
 
-    if (pil == "3") :
+    elif (pil == "3") :
         clr()
         print(" _______________________________________________________________________________________") 
         print("|                                                                        Urut Barang    |")            
@@ -728,77 +832,31 @@ def menu(param):
         pilCari = input("\n\tAnda ingin Mengurutkan Berdasarkan : ")    
         
         if (pilCari == "1"): pilCari = "Jenis"
-        if (pilCari == "2"): pilCari = "Brand"
-        if (pilCari == "3"): pilCari = "Warna"
-        if (pilCari == "4"): pilCari = "Varian"
-        if (pilCari == "5"): pilCari = "Harga"
+        elif (pilCari == "2"): pilCari = "Brand"
+        elif (pilCari == "3"): pilCari = "Warna"
+        elif (pilCari == "4"): pilCari = "Varian"
+        elif (pilCari == "5"): pilCari = "Harga"
 
         orderby(pilCari.lower(), items)
         back_to_menu()
 
 
 
-
-    if (pil == "4") :
+    elif (pil == "4") :
         clr()
             
         daftarBarang(items)
         cari(items)
         back_to_menu()  
 
+    elif (pil == "5") :
+        webbrowser.open('http://wa.me/6282158317722')
+        menu(param)
 
-    if (pil == "5") :
-        clr()
-        print(" _______________________________________________________________________________________") 
-        print("|                                                                  Laporan Penjualan    |")             
-        print("|    1.  Bulan Ini                                                                      |")      
-        print("|    2.  Tahun Ini                                                                      |")  
-        print("|                                                                                       |")   
-        print("|                                                                                       |")         
-        print("|_______________________________________________________________________________________|") 
-        pil = input(" Pilih Menu >>  ")
+    # elif (pil == "6") :
+    #     webbrowser.open('http://wa.me/6282158317722')
 
-
-        if (pil == "1"):
-            clr()
-            print(" _______________________________________________________________________________________") 
-            print("|                                                        Laporan Penjualan Bulan ini    |")             
-            print("|    1.  Lihat Grafik Penjualan Bulan Ini                                               |")      
-            print("|    2.  Lihat Barang Yang Terjual                                                      |")      
-            print("|    3.  Lihat Keuntungan Bulan Ini                                                     |")      
-            print("|                                                                                       |")    
-            print("|                                                                                       |")    
-            print("|_______________________________________________________________________________________|") 
-            pil = input(" Pilih Menu >>  ")
-            
-            if (pil == "1"):
-                pass
-            if (pil == "2"):
-                pass
-            if (pil == "3"):
-                pass
-
-        elif (pil == "2"):
-            clr()
-            print(" _______________________________________________________________________________________") 
-            print("|                                                        Laporan Penjualan Tahun ini    |")             
-            print("|    1.  Lihat Grafik Penjualan Tahun Ini                                               |")      
-            print("|    2.  Lihat Barang Yang Terjual                                                      |")      
-            print("|    3.  Lihat Keuntungan Tahun Ini                                                     |")    
-            print("|                                                                                       |")   
-            print("|                                                                                       |")     
-            print("|_______________________________________________________________________________________|") 
-            pil = input(" Pilih Menu >>  ")
-
-            if (pil == "1"):
-                pass
-            if (pil == "2"):
-                pass
-            if (pil == "3"):
-                pass
-
-
-    if (pil == "0") :
+    elif (pil == "0") :
         menu(param)
 
 menu(param)
