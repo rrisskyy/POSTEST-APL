@@ -6,3 +6,6 @@
 6. SYNTAX ERROR, EXCEPTION AND EXCEPTION HANDLING
 7. FILE
 8. REKRUSIF ✅
+
+
+Kalau ada yang mau ditanyakan, chat Risky
