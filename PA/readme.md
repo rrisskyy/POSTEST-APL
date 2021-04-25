@@ -14,7 +14,7 @@
 
 
 CARA MENGGUNAKAN APLIKASI
-1. [DOWNLOAD XAMPP](#https://www.apachefriends.org/index.html)
+1. [DOWNLOAD XAMPP](https://www.apachefriends.org/index.html)
 2. LALU NYALAKAN MySQL dan Apache
 3. DAN IMPORT FILE toko-pancing.sql 
 
