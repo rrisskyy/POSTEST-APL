@@ -129,6 +129,8 @@ def spacing2 (item, i):
         a = "|".ljust(3) + "[" + str(i+1) + "] ".ljust(5) + "|".ljust(3)
     if i >= 9:
         a = "|".ljust(3) + "[" + str(i+1) + "] ".ljust(4) + "|".ljust(3)
+    if i >= 99:
+        a = "|".ljust(3) + "[" + str(i+1) + "] ".ljust(3) + "|".ljust(3)
     a += str(item[i][1]).ljust(14) + "|".ljust(3)
     a += str(item[i][2]).ljust(19) + "|".ljust(3)
     a += str(item[i][3]).ljust(20) + "|".ljust(3)
@@ -212,64 +214,23 @@ def cari(items) :
 
     
 
-def ascMergeSort(arr):
-	if len(arr) > 1:
 
-		# DIV
-		mid = len(arr)//2
-
-        # 0 ~ MID
-		L = arr[:mid]
-
-        # MID ~ LEN-1
-		R = arr[mid:]
-
-        # REKRUSIF
-		ascMergeSort(L)
-		ascMergeSort(R)
-
-
-		i = j = k = 0
-
-		while i < len(L) and j < len(R):
-			if L[i][3] > R[j][3]:
-				arr[k] = L[i]
-				i += 1
-			else:
-				arr[k] = R[j]
-				j += 1
-			k += 1
-
-		# Kiri
-		while i < len(L):
-			arr[k] = L[i]
-			i += 1
-			k += 1
-
-        # Kanan
-		while j < len(R):
-			arr[k] = R[j]
-			j += 1
-			k += 1
+def ascBubbleSort(arr):
+    n = len(arr)
+    for i in range(n):  
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1] :
+                arr[j], arr[j+1] = arr[j+1], arr[j]
         
 
 
 def descMergeSort(arr):
 	if len(arr) > 1:
-
-		# DIV
 		mid = len(arr)//2
-
-        # 0 ~ MID
 		L = arr[:mid]
-
-        # MID ~ LEN-1
 		R = arr[mid:]
-
-        # REKRUSIF
 		descMergeSort(L)
 		descMergeSort(R)
-
 
 		i = j = k = 0
 
@@ -282,13 +243,11 @@ def descMergeSort(arr):
 				j += 1
 			k += 1
 
-		# Kiri
 		while i < len(L):
 			arr[k] = L[i]
 			i += 1
 			k += 1
 
-        # Kanan
 		while j < len(R):
 			arr[k] = R[j]
 			j += 1
@@ -381,32 +340,42 @@ class Orang:
         while(True):
             if (pil == "1"):
                 newFirstName = (input("Masukkan First Name Baru :    "))
-                param1 = "UPDATE barang SET first_name = {} WHERE id = {}".format(newFirstName, self.id)
-                query(param1)
+                param1 = "UPDATE costumers SET first_name = %s WHERE id = %s"
+                val = (newFirstName, self.id)
+                mycursor.execute(param1, val)
+                conn.commit()
                 print("Berhasil!!")
                 break
             elif (pil == "2"):
-                newLastName = (input("Masukkan First Name Baru :    "))
-                param1 = "UPDATE barang SET last_name = {} WHERE id = {}".format(newLastName, self.id)
-                query(param1)
+                newLastName = (input("Masukkan Last Name Baru :    "))
+                param1 = "UPDATE costumers SET last_name = %s WHERE id = %s"
+                val = (newLastName, self.id)
+                mycursor.execute(param1, val)
+                conn.commit()
                 print("Berhasil!!")
                 break
             elif (pil == "3"):
-                newAddress = (input("Masukkan First Name Baru :    "))
-                param1 = "UPDATE barang SET address = {} WHERE id = {}".format(newAddress, self.id)
-                query(param1)
+                newAddress = (input("Masukkan Address Baru :    "))
+                param1 = "UPDATE costumers SET address = %s WHERE id = %s"
+                val = (newAddress, self.id)
+                mycursor.execute(param1, val)
+                conn.commit()
                 print("Berhasil!!")
                 break
             elif (pil == "4"):
-                newEmail = (input("Masukkan First Name Baru :    "))
-                param1 = "UPDATE barang SET email = {} WHERE id = {}".format(newEmail, self.id)
-                query(param1)
+                newEmail = (input("Masukkan Email Baru :    "))
+                param1 = "UPDATE costumers SET email = %s WHERE id = %s"
+                val = (newEmail, self.id)
+                mycursor.execute(param1, val)
+                conn.commit()
                 print("Berhasil!!")
                 break
             elif (pil == "5"):
-                newPhoneNumber = (input("Masukkan First Name Baru :    "))
-                param1 = "UPDATE barang SET phone_number = {} WHERE id = {}".format(newPhoneNumber, self.id)
-                query(param1)
+                newPhoneNumber = (input("Masukkan Nomor Handphone Baru :    "))
+                param1 = "UPDATE costumers SET phone_number = %s WHERE id = %s"
+                val = (newPhoneNumber, self.id)
+                mycursor.execute(param1, val)
+                conn.commit()
                 print("Berhasil!!")
                 break
             elif(pil == "0"):
@@ -547,7 +516,7 @@ def menu(param):
                     print("[2] Terendah ")
                     
                     pil = input("Pilih Menu :    ")
-                    if (pil == "1") : ascMergeSort(daftarBeli)    
+                    if (pil == "1") : ascBubbleSort(daftarBeli)    
                     elif (pil == "2") : descMergeSort(daftarBeli)    
                     clr()
                     daftarBarang2(daftarBeli)        
