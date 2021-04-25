@@ -1,31 +1,19 @@
-# MENGIMPOR OS DIGUNAKAN UNTUK CLEARSCREEN, DLL
 import os
+from datetime import datetime
+from matplotlib import pyplot as plt
+import mysql.connector
+import webbrowser
 from os import environ
 
-# MENGIMPOR DATETIME UNTUK MENGETAHUI WAKTU SEKARANG
-from datetime import datetime
-
-# MENGIMPOR MATPLOTLIB UNTUK MENGGAMBAR GRAFIK PENJUALAN
-from matplotlib import pyplot as plt
-
-# KONEKTOR KE DATABASE
-import mysql.connector
-
-# UNTUK OPSI NOMOR 5 AGAR USER BISA MENGHUBUNGI ADMIN
-import webbrowser
 
 
 
-
-# CONNECT KE DATABASE
 conn = mysql.connector.connect( host="localhost", user="root", password="", database="toko-pancing" )
 mycursor = conn.cursor()
 
-# CLEAR SCREEN
 def clr():
    _ = os.system('clear') if os.name == 'posix' else os.system('cls')
 
-# QUERY KE DATABASE
 def query(query):
     mycursor.execute(query)
     items = mycursor.fetchall()
@@ -35,7 +23,7 @@ def query(query):
 
 
 
-# MENGHILANGKAN WARNING DI MATPLOTLIB
+
 def suppress_qt_warnings():
     environ["QT_DEVICE_PIXEL_RATIO"] = "0"
     environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
@@ -45,29 +33,20 @@ def suppress_qt_warnings():
 
 
 
-	
+
 items = []
-
-
-# WAKTU SEKARANG
 now = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
 
 
 
-# KEMBALI TO MENU
 def back_to_menu():
     input("\n\n\nTekan Enter Untuk Kembali ...")
     menu(param)
 
 
 
-	
-# MEMANGGIL FUNGSI QUERY DENGAN PARAMETER YANG DIGUNAKAN ADALAH VARIABEL PARAM KITA DISINI MENGQUERY TABLE barang
 param = "harga"  
 items = query("SELECT * FROM barang ORDER BY " + param)
-    
-    # LETAK DARI FIELD NYA
-
     # "id": item[0][0],
     # "jenis": item[0][1],
     # "brand": item[0][2],
@@ -75,23 +54,14 @@ items = query("SELECT * FROM barang ORDER BY " + param)
     # "warna": item[0][4],
     # "harga": item[0][5],
     # "stok": item[0][6],
-    # orders = query("SELECT * FROM orders ORDER BY " + param)
+# orders = query("SELECT * FROM orders ORDER BY " + param)
 
 
-# MEMANGGIL FUNGSI QUERY KITA DISINI MENGQUERY TABLE costumer LALU MENGURUTKAN BERDASARKAN first_name
 costumers = query("SELECT * FROM costumers ORDER BY first_name")
 
 
-# MEMANGGIL FUNGSI QUERY KITA DISINI MENGQUERY TABLE terjual LALU MENGURUTKAN BERDASARKAN jumlah
 terjual = query("SELECT * FROM terjual ORDER BY jumlah")
 
-
-
-
-
-# ===================================================================================================================================================================================================================
-# FUNCTION HEADER AND FOOTER DIBUAT SUPAYA KODE TERLIHAT LEBIH RAPI
-# ===================================================================================================================================================================================================================
 
 def header():
     return (" ____________________________________________________________________________________________________________________________________________________\n" 
@@ -114,22 +84,12 @@ def footer2():
     return ("⊥_________⊥________________⊥_____________________⊥______________________⊥_________________⊥__________________⊥__________________⊥__________⊥_________________________⊥")
 
 def header3():
-    return (" ___________________________________________________________________________________________\n" 
-        +   "|_____JENIS______|________BRAND________|________VARIAN________|______HARGA_______|__JUMLAH__|")
-def footer3():
-    return ("⊥________________⊥_____________________⊥______________________⊥__________________⊥__________⊥")
+    return (" ===============================================================================================================\n" +
+            "                                                TOKO  PANCING                                                 \n"   +
+            " ===============================================================================================================\n\n" +
+            f" {now}\n\n" + 
+            " |                                                            |  JUMLAH  |      HARGA       |      TOTAL       |")
 
-# ===================================================================================================================================================================================================================
-# ===================================================================================================================================================================================================================
-
-
-
-
-
-
-# ===================================================================================================================================================================================================================
-# FUNCTION spacing DIBUAT SUPAYA KODE TERLIIHAT RAPI KARENA MENGGUNAKAN FUNCTION .ljust dan r.just
-# ===================================================================================================================================================================================================================
 
 def spacing (item, i):
     a = ''
@@ -180,61 +140,37 @@ def spacing2 (item, i):
     return a
 
 def spacing3 (item, i):
-    a = '|'.ljust(3)
-    a += str(item[i][0]).ljust(14) + "|".ljust(3)
-    a += str(item[i][1]).ljust(19) + "|".ljust(3)
-    a += str(item[i][2]).ljust(20) + "|".ljust(3) + "Rp. "
-    a += str(item[i][3]).ljust(12) + "|".ljust(5)
-    a += str(item[i][4]).ljust(6)  + "|".ljust(3)
+    a = ' |'.ljust(3)
+    a += str(item[i][0]).ljust(14) + " ".ljust(3)
+    a += str(item[i][1]).ljust(19) + " ".ljust(3)
+    a += str(item[i][2]).ljust(20) + "|".ljust(5) 
+    a += str(item[i][4]).ljust(6)  + "|".ljust(3) + "Rp. "
+    a += str(item[i][5]).ljust(12) + "|".ljust(3) + "Rp. "
+    a += str(item[i][3]).ljust(12) + "|".ljust(3)
     return a
 
-
-# ===================================================================================================================================================================================================================
-# ===================================================================================================================================================================================================================
-
-
-
-
-
-
-'''
-TUJUAN DIBUATNYA FUNCTION PEMBAYARAN DIGUNAKAN UNTUK MENGKALI HARGA BARANG DENGAN JUMLAH YANG DIBELI 
-MENAMBAHKAN BARANG YANG DIBELI KEDALAM TABEL terjual(MySQL) AGAR DAPAT DI DATA DAN DAPAT DILIHAT SELISIH ANTARA UNTUNG DAN RUGINYA
-'''
 def pembayaran(id, jenis, brand, varian, warna, harga, stok, totalHarga, count):
-    # DISINI KITA MEMILIH SEMUA BARANG DARI TABEL barang YANG MEMILIKI ID = variable id	
     result = query(f"SELECT * FROM barang WHERE `id` = {id}")
     harga = result[0][5] * count
     modal = result[0][6] * count
     totalHarga += harga
     print("Harga Barang  =  ", result[0][5], " x ", count, "  =  ", harga)
     
-
-    
-    # DISINI KITA MENGINSERT ATAU MENAMBAHKAN DATA BARU KEDALAM TABEL terjual
     param2 = "INSERT INTO `terjual` (`id`, `jenis`, `brand`, `varian`, `warna`, `harga`, `modal`, `jumlah`, `date`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
     val = (None, jenis, brand, varian, warna, harga, modal, count, now)
-    # MENGEKSEKUSI SINTAKS SQL TADI DAN MELAKUKAN COMMIT KE DATABASE
     mycursor.execute(param2, val)
     conn.commit()
-    # KEMBALIKAN TOTAL HARGA
+
     return totalHarga
         
-	
-	
-	
 
 
-# ===================================================================================================================================================================================================================
-# FUNCTION daftarBarang, daftarOrang DIBUAT UNTUK MENCETAK HASIL DARI QUERY DENGAN RAPIH KARENA MENGGUNAKAN HEADER, FOOTER, DAN ljust
-# ===================================================================================================================================================================================================================
 
 def daftarBarang(items):
     print(header())
     for i in range(len(items)) :
         print(spacing(items, i))
     print(footer())
-
 
 
 
@@ -245,19 +181,13 @@ def daftarBarang1(items):
         print(spacing2(items, i))
     print(footer2())
 
-
-
-
 def daftarBarang2(items):
     print("\nStruk : \n")
     print(header3())
     for i in range(len(items)) :
         print(spacing3(items, i))
-    print(footer3())
-        
-	
-	
-	
+
+
 
 def daftarOrang(items):
     print(header1())
@@ -266,16 +196,6 @@ def daftarOrang(items):
     print(footer1())        
 
 
-# ===================================================================================================================================================================================================================
-# ===================================================================================================================================================================================================================
-
-
-
-
-'''
-FUNCTION DIBUAT AGAR PROGRAM BISA MENCARI SESUATU YANG MIRIP DENGAN KATA KUNCI YANG DIKETIK USER (TIDAK HARUS SAMA PERSIS) KARENA SAYA DISINI MENGGUNAKAN 'LIKE'
-KALAU MAU MENCARI DENGAN KATA KUNCI YANG SAMA PERSIS, 'LIKE' DIGANTI DENGAN '='
-'''
 
 def cari(items) :  
     while(True): 
@@ -290,45 +210,89 @@ def cari(items) :
         break
     daftarBarang(equalItems)
 
-
-
     
-# MERGE SORT
-def mergeSort(arr):
-    if len(arr) > 1:
-        # DIV
-	mid = len(arr)//2
+
+def ascMergeSort(arr):
+	if len(arr) > 1:
+
+		# DIV
+		mid = len(arr)//2
+
         # 0 ~ MID
-	L = arr[:mid]
+		L = arr[:mid]
+
         # MID ~ LEN-1
-	R = arr[mid:]
+		R = arr[mid:]
 
         # REKRUSIF
-	mergeSort(L)
-	mergeSort(R)
+		ascMergeSort(L)
+		ascMergeSort(R)
 
 
-	i = j = k = 0
+		i = j = k = 0
 
-	while i < len(L) and j < len(R):
-	    if L[i][3] < R[j][3]:
-		arr[k] = L[i]
-		i += 1
-	    else:
-		arr[k] = R[j]
-		j += 1
-		k += 1
+		while i < len(L) and j < len(R):
+			if L[i][3] > R[j][3]:
+				arr[k] = L[i]
+				i += 1
+			else:
+				arr[k] = R[j]
+				j += 1
+			k += 1
 
-	# Kiri
-	while i < len(L):
-	    arr[k] = L[i]
-	    i += 1
-	    k += 1
+		# Kiri
+		while i < len(L):
+			arr[k] = L[i]
+			i += 1
+			k += 1
+
         # Kanan
-	while j < len(R):
-	    arr[k] = R[j]
-	    j += 1
-	    k += 1
+		while j < len(R):
+			arr[k] = R[j]
+			j += 1
+			k += 1
+        
+
+
+def descMergeSort(arr):
+	if len(arr) > 1:
+
+		# DIV
+		mid = len(arr)//2
+
+        # 0 ~ MID
+		L = arr[:mid]
+
+        # MID ~ LEN-1
+		R = arr[mid:]
+
+        # REKRUSIF
+		descMergeSort(L)
+		descMergeSort(R)
+
+
+		i = j = k = 0
+
+		while i < len(L) and j < len(R):
+			if L[i][3] < R[j][3]:
+				arr[k] = L[i]
+				i += 1
+			else:
+				arr[k] = R[j]
+				j += 1
+			k += 1
+
+		# Kiri
+		while i < len(L):
+			arr[k] = L[i]
+			i += 1
+			k += 1
+
+        # Kanan
+		while j < len(R):
+			arr[k] = R[j]
+			j += 1
+			k += 1
         
 
 
@@ -549,14 +513,15 @@ def menu(param):
                     "count": count
                     }
                 
-                daftarBeli.append((kwargs["jenis"], kwargs["brand"], kwargs["varian"], kwargs["harga"] * kwargs["count"], kwargs["count"]))
+                daftarBeli.append((kwargs["jenis"], kwargs["brand"], kwargs["varian"], kwargs["harga"] * kwargs["count"], kwargs["count"], kwargs["harga"]))
                 newStok = kwargs["stok"] - kwargs["count"]
                 if (kwargs["stok"] < kwargs["count"]) :
                     beli = input(f"Barang yang tersedia tidak cukup, Maukah anda membeli sebanyak {kwargs['stok']} (Y/N) ?")
                     if beli.upper() == "Y":
                         newStok = kwargs["stok"]
                     elif beli.upper() == "N":
-                        break
+                        daftarBeli.pop()
+                        continue
                 
                 updatingStok = f'UPDATE barang SET stok = {newStok} WHERE id = {kwargs["id"]}'
                 mycursor.execute(updatingStok)
@@ -568,26 +533,35 @@ def menu(param):
                 if (ulang.upper() == "Y"):
                     continue
                 elif(ulang.upper() == "N"):
-                    while(True):
-                        print(f"Total Harga : {totalHarga}")
-                        uang = int(input("Berapa Uang Yang Dibayarkan:    ")) 
+                    print(f"\n\nTotal Harga : Rp. {totalHarga}\n")
+                    while (True):
+                        uang = int(input("Berapa Uang Yang Dibayarkan:   Rp. ")) 
                         result = uang - totalHarga
-                        if (result == 0):
-                            print("Uang Yang Dibayarkan Pas!")
-                            break
-                        elif (result < 0):
+                        if (result < 0):
                             print("Uang Yang Dibayarkan Tidak Cukup Mohon Tambah Lagi!")
                             print(f"Uang Kurang {abs(result)}")
                             continue
-
-                        elif (result > 0):
-                            print(f"Uang Yang Dibayarkan Lebih, ini adalah Kembaliannya :    {result}")
-                            break
+                        else: break
+                    print("\n\nUrutkan Struk dari Harga Tertinggi atau Terendah? ")
+                    print("[1] Tertinggi")
+                    print("[2] Terendah ")
+                    
+                    pil = input("Pilih Menu :    ")
+                    if (pil == "1") : ascMergeSort(daftarBeli)    
+                    elif (pil == "2") : descMergeSort(daftarBeli)    
+                    clr()
+                    daftarBarang2(daftarBeli)        
+                    print("  _____________________________________________________________________________________________________________\n")
+                    
+                    print(f"                                                                                     Total Harga : Rp. {totalHarga}")
+                    print(f"                                                                            Uang Yang Dibayarkan : Rp. {uang}")
+                    if (result == 0):
+                        print(f"                                                                                   Uang Yang Dibayarkan Pas")
+                    elif (result > 0):
+                        print(f"                                                                                       Kembalian : Rp. {result}\n")
                     break
                 # ===================================================================================================================================================================================================================================================================
-
-            mergeSort(daftarBeli)    
-            daftarBarang2(daftarBeli)        
+            totalHarga = 0  
             back_to_menu()
 
 
