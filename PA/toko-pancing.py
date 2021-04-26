@@ -85,7 +85,7 @@ def footer2():
 
 def header3():
     return (" ===============================================================================================================\n" +
-            "                                                TOKO  PANCING                                                 \n"   +
+            "                                                 TOKO  PANCING                                                \n"   +
             " ===============================================================================================================\n\n" +
             f" {now}\n\n" + 
             " |                                                            |  JUMLAH  |      HARGA       |      TOTAL       |")
@@ -272,139 +272,120 @@ def orderby(keyword, item):
 
 
 
-class Barang:
-    def __init__(self, id, jenis, brand, varian, warna, harga, modal, stok) :
-        self.id = id
-        self.jenis = jenis
-        self.brand = brand
-        self.varian = varian
-        self.warna = warna
-        self.harga = harga
-        self.modal = modal
-        self.stok = stok
 
-    def tambahBarang(self) :
-        param = "INSERT INTO `barang` (`id`, `jenis`, `brand`, `varian`, `warna`, `harga`, `modal`,`stok`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        val = (self.id, self.jenis, self.brand, self.varian, self.warna, self.harga, self.modal, self.stok)
-        mycursor.execute(param, val)
-        conn.commit()
-        print("Berhasil!!")
+def tambahBarang(id, jenis, brand, varian, warna, harga, modal, stok) :
+    param = "INSERT INTO `barang` (`id`, `jenis`, `brand`, `varian`, `warna`, `harga`, `modal`,`stok`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    val = (id, jenis, brand, varian, warna, harga, modal, stok)
+    mycursor.execute(param, val)
+    conn.commit()
+    print("Berhasil!!")
 
-    def tambahStok(self) :
-        stokBaru = int(input("Masukkan Jumlah Stok :    "))
-        stokBaru += self.stok
-        param = f"UPDATE `barang` SET `stok` = {stokBaru} WHERE id = {self.id}"
+def tambahStok(stok, id) :
+    stokBaru = int(input("Masukkan Jumlah Stok :    "))
+    stokBaru += stok
+    param = f"UPDATE `barang` SET `stok` = {stokBaru} WHERE id = {id}"
+    query(param)
+    print("Berhasil!!")
+
+def ubahHargaBarang(id) : 
+    hargaBaru = int(input("Masukkan Harga Baru :     "))
+    param = "UPDATE barang SET harga = {} WHERE id = {}".format(hargaBaru, id)
+    query(param)
+    print("Berhasil!!")
+
+def hapusBarang(id) :
+    yakin = input("Apakah anda yakin ingin menghapus item ini (Y/N) ? :    ")
+    if (yakin.upper() == "Y") :
+        param = "DELETE FROM barang WHERE id = {}".format(id)
         query(param)
         print("Berhasil!!")
+    elif (yakin.upper() == "N") :
+        exit
+    else :
+        print("Input yang anda Masukkan SALAH!")
 
-    def ubahHargaBarang(self) : 
-        hargaBaru = int(input("Masukkan Harga Baru :     "))
-        param = "UPDATE barang SET harga = {} WHERE id = {}".format(hargaBaru, self.id)
-        query(param)
-        print("Berhasil!!")
 
-    def hapusBarang(self) :
-        yakin = input("Apakah anda yakin ingin menghapus item ini (Y/N) ? :    ")
-        if (yakin.upper() == "Y") :
-            param = "DELETE FROM barang WHERE id = {}".format(self.id)
-            query(param)
+
+
+def tambahOrang(id, first_name, last_name, address, email, phone_number) :
+    param1 = "INSERT INTO costumers (id, first_name, last_name, address, email, phone_number) VALUES (%s, %s, %s, %s, %s, %s)"
+    val = (id, first_name, last_name, address, email, phone_number)
+    mycursor.execute(param1, val)
+    conn.commit()
+    print("Berhasil!!")
+
+def ubah(id, first_name, last_name, address, email, phone_number) : 
+    print("\nAnda ingin mengubah Apa    ?\n\n")
+    print(f"1). First Name :  {first_name}  ")
+    print(f"2). Last Name :  {last_name}  ")
+    print(f"3). Address :  {address}  ")
+    print(f"4). Email :  {email}  ")
+    print(f"5). Phone Number :  {phone_number}  ")
+    print("\n\n\n0). Kembali Ke Menu     ")
+    pil = input("\n\nPilih Menu :    ")
+
+    while(True):
+        if (pil == "1"):
+            newFirstName = (input("Masukkan First Name Baru :    "))
+            param1 = "UPDATE costumers SET first_name = %s WHERE id = %s"
+            val = (newFirstName, id)
+            mycursor.execute(param1, val)
+            conn.commit()
             print("Berhasil!!")
-        elif (yakin.upper() == "N") :
-            exit
-        else :
-            print("Input yang anda Masukkan SALAH!")
-
-
-
-class Orang:
-
-    def __init__(self, id, first_name, last_name, address, email, phone_number) :
-        self.id = id
-        self.first_name = first_name
-        self.last_name = last_name
-        self.address = address
-        self.email = email
-        self.phone_number = phone_number
-
-    def tambahOrang(self) :
-        param1 = "INSERT INTO costumers (id, first_name, last_name, address, email, phone_number) VALUES (%s, %s, %s, %s, %s, %s)"
-        val = (self.id, self.first_name, self.last_name, self.address, self.email, self.phone_number)
-        mycursor.execute(param1, val)
-        conn.commit()
-        print("Berhasil!!")
-
-    def ubah(self) : 
-        print("\nAnda ingin mengubah Apa    ?\n\n")
-        print(f"1). First Name :  {self.first_name}  ")
-        print(f"2). Last Name :  {self.last_name}  ")
-        print(f"3). Address :  {self.address}  ")
-        print(f"4). Email :  {self.email}  ")
-        print(f"5). Phone Number :  {self.phone_number}  ")
-        print("\n\n\n0). Kembali Ke Menu     ")
-        pil = input("\n\nPilih Menu :    ")
-
-        while(True):
-            if (pil == "1"):
-                newFirstName = (input("Masukkan First Name Baru :    "))
-                param1 = "UPDATE costumers SET first_name = %s WHERE id = %s"
-                val = (newFirstName, self.id)
-                mycursor.execute(param1, val)
-                conn.commit()
-                print("Berhasil!!")
-                break
-            elif (pil == "2"):
-                newLastName = (input("Masukkan Last Name Baru :    "))
-                param1 = "UPDATE costumers SET last_name = %s WHERE id = %s"
-                val = (newLastName, self.id)
-                mycursor.execute(param1, val)
-                conn.commit()
-                print("Berhasil!!")
-                break
-            elif (pil == "3"):
-                newAddress = (input("Masukkan Address Baru :    "))
-                param1 = "UPDATE costumers SET address = %s WHERE id = %s"
-                val = (newAddress, self.id)
-                mycursor.execute(param1, val)
-                conn.commit()
-                print("Berhasil!!")
-                break
-            elif (pil == "4"):
-                newEmail = (input("Masukkan Email Baru :    "))
-                param1 = "UPDATE costumers SET email = %s WHERE id = %s"
-                val = (newEmail, self.id)
-                mycursor.execute(param1, val)
-                conn.commit()
-                print("Berhasil!!")
-                break
-            elif (pil == "5"):
-                newPhoneNumber = (input("Masukkan Nomor Handphone Baru :    "))
-                param1 = "UPDATE costumers SET phone_number = %s WHERE id = %s"
-                val = (newPhoneNumber, self.id)
-                mycursor.execute(param1, val)
-                conn.commit()
-                print("Berhasil!!")
-                break
-            elif(pil == "0"):
-                menu(param)
-
-            else:
-                clr()
-                print("Pilihan Salah!\n")
-                daftarOrang(costumers)
-                self.ubah()
-            
-
-
-    def hapusOrang(self) :
-        yakin = input("Apakah anda yakin ingin menghapus Orang ini (Y/N) ? :    ")
-        if (yakin.upper() == "Y") :
-            param1 = "DELETE FROM costumers WHERE id = {}".format(self.id)
-            query(param1)
+            break
+        elif (pil == "2"):
+            newLastName = (input("Masukkan Last Name Baru :    "))
+            param1 = "UPDATE costumers SET last_name = %s WHERE id = %s"
+            val = (newLastName, id)
+            mycursor.execute(param1, val)
+            conn.commit()
             print("Berhasil!!")
-        elif (yakin.upper() == "N") :
-            exit
-        else :
-            print("Input yang anda Masukkan SALAH!")
+            break
+        elif (pil == "3"):
+            newAddress = (input("Masukkan Address Baru :    "))
+            param1 = "UPDATE costumers SET address = %s WHERE id = %s"
+            val = (newAddress, id)
+            mycursor.execute(param1, val)
+            conn.commit()
+            print("Berhasil!!")
+            break
+        elif (pil == "4"):
+            newEmail = (input("Masukkan Email Baru :    "))
+            param1 = "UPDATE costumers SET email = %s WHERE id = %s"
+            val = (newEmail, id)
+            mycursor.execute(param1, val)
+            conn.commit()
+            print("Berhasil!!")
+            break
+        elif (pil == "5"):
+            newPhoneNumber = (input("Masukkan Nomor Handphone Baru :    "))
+            param1 = "UPDATE costumers SET phone_number = %s WHERE id = %s"
+            val = (newPhoneNumber, id)
+            mycursor.execute(param1, val)
+            conn.commit()
+            print("Berhasil!!")
+            break
+        elif(pil == "0"):
+            menu(param)
+
+        else:
+            clr()
+            print("Pilihan Salah!\n")
+            daftarOrang(costumers)
+            ubah()
+        
+
+
+def hapusOrang(id) :
+    yakin = input("Apakah anda yakin ingin menghapus Orang ini (Y/N) ? :    ")
+    if (yakin.upper() == "Y") :
+        param1 = "DELETE FROM costumers WHERE id = {}".format(id)
+        query(param1)
+        print("Berhasil!!")
+    elif (yakin.upper() == "N") :
+        exit
+    else :
+        print("Input yang anda Masukkan SALAH!")
 
 
 
@@ -612,6 +593,7 @@ def menu(param):
                 input("\n\n\nTekan Enter Untuk Kembali ...")
                 menu(param)
             elif(pil == "2"):
+                print("\n\nTambah Pelanggan\n\n")
                 firstName = input("Masukkan Nama Depan :   ")
                 lastName = input("Masukkan Nama Belakang :    ")
                 print("Contoh Alamat: Jalan Ulin RT 10 Kel. Sebulu Ulu Kec. Sebulu  Kab. Kutai Kartanegara Kalimantan Timur 75552")
@@ -619,8 +601,7 @@ def menu(param):
                 email = input("Masukkan Email :   ")
                 phoneNumber = int(input("Masukkan Nomor Handphone :    "))
 
-                orang = Orang(None, firstName, lastName, address, email, phoneNumber)
-                orang.tambahOrang()
+                tambahOrang(None, firstName, lastName, address, email, phoneNumber)
                 back_to_menu()
 
             elif(pil == "3"):
@@ -639,8 +620,7 @@ def menu(param):
                     "phone_number": costumers[pil][5],
                     }
 
-                orang = Orang(**kwargs)
-                orang.ubah()
+                ubah(**kwargs)
                 back_to_menu()
 
             elif(pil == "4"):
@@ -649,18 +629,10 @@ def menu(param):
 
                 pil = int(input("\nPilihlah Orang Yang Ingin Anda Hapus (ID) :      "))
                 pil -= 1
-
-                kwargs = {
-                    "id": costumers[pil][0],
-                    "first_name": costumers[pil][1],
-                    "last_name": costumers[pil][2],
-                    "address": costumers[pil][3],
-                    "email": costumers[pil][4],
-                    "phone_number": costumers[pil][5],
-                    }
                 
-                orang = Orang(**kwargs)
-                orang.hapusOrang()
+                id = costumers[pil][0]
+                
+                hapusOrang(id)
                 back_to_menu()
 
         elif (pil == "4") :
@@ -679,8 +651,7 @@ def menu(param):
             modal = int(input("Masukkan Harga Modal :   "))
             stok = int(input("Masukkan Stok Barang :    "))
 
-            barang = Barang(None, jenis, brand, varian, warna, harga, modal, stok)
-            barang.tambahBarang()
+            tambahBarang(None, jenis, brand, varian, warna, harga, modal, stok)
             input("\n\n\nTekan Enter Untuk Kembali ...")
             menu(param)
 
@@ -693,19 +664,9 @@ def menu(param):
             pil = int(input("\nPilihlah Barang Yang Ingin Anda Hapus (ID) :      "))
             pil -= 1
 
-            kwargs = {
-                "id": items[pil][0],
-                "jenis": items[pil][1],
-                "brand": items[pil][2],
-                "varian": items[pil][3],
-                "warna": items[pil][4],
-                "harga": items[pil][5],
-                "modal": items[pil][6],
-                "stok": items[pil][7]
-                }
+            id = items[pil][0]
             
-            barang = Barang(**kwargs)
-            barang.hapusBarang()
+            hapusBarang(id)
             back_to_menu()
 
 
@@ -714,19 +675,10 @@ def menu(param):
             daftarBarang(items)
             pil = int(input("\nPilihlah Barang Yang Harganya Ingin anda ubah (ID) :      "))
             pil -= 1
-            kwargs = {
-                "id": items[pil][0],
-                "jenis": items[pil][1],
-                "brand": items[pil][2],
-                "varian": items[pil][3],
-                "warna": items[pil][4],
-                "harga": items[pil][5],
-                "modal": items[pil][6],
-                "stok": items[pil][7]
-                }
 
-            barang = Barang(**kwargs)
-            barang.ubahHargaBarang()
+            id = items[pil][0]
+
+            ubahHargaBarang(id)
             back_to_menu()
 
         elif (pil == "8") :
@@ -738,16 +690,10 @@ def menu(param):
 
             kwargs = {
                 "id": items[pil][0],
-                "jenis": items[pil][1],
-                "brand": items[pil][2],
-                "varian": items[pil][3],
-                "harga": items[pil][5],
-                "modal": items[pil][6],
                 "stok": items[pil][7]
                 }
 
-            barang = Barang(**kwargs)
-            barang.tambahStok()
+            tambahStok(**kwargs)
             back_to_menu()
 
         elif (pil == "9") :
@@ -901,9 +847,6 @@ def menu(param):
     elif (pil == "5") :
         webbrowser.open('http://wa.me/6282158317722')
         menu(param)
-
-    # elif (pil == "6") :
-    #     webbrowser.open('http://wa.me/6282158317722')
 
     elif (pil == "0") :
         menu(param)
