@@ -258,7 +258,13 @@ def descMergeSort(arr):
 
 def orderby(keyword, item):
     global items
-    param = f"SELECT * FROM barang ORDER BY {keyword}"
+    print("[1] Ascending")
+    print("[2] Descending")
+    a = input("Pilih Menu :    ")
+    if a == "1": a = "ASC"
+    elif a == "2": a = "DESC"
+
+    param = f"SELECT * FROM barang ORDER BY {keyword} {a}"
     item = query(param)
     items = item
     daftarBarang(items)
@@ -445,7 +451,8 @@ def menu(param):
         print("|       5.  Tambah Barang                                                               |")      
         print("|       6.  Hapus Barang                                                                |")      
         print("|       7.  Ubah Harga                                                                  |")      
-        print("|       8.  Tambah Stok                                                                 |")      
+        print("|       8.  Tambah Stok                                                                 |")
+        print("|       9.  Urutkan Barang                                                              |")      
         print("|                                                                                       |")      
         print("|       0.  Kembali                                                                     |")
         print("|                                                                                       |")      
@@ -734,7 +741,6 @@ def menu(param):
                 "jenis": items[pil][1],
                 "brand": items[pil][2],
                 "varian": items[pil][3],
-                "warna": items[pil][4],
                 "harga": items[pil][5],
                 "modal": items[pil][6],
                 "stok": items[pil][7]
@@ -744,6 +750,30 @@ def menu(param):
             barang.tambahStok()
             back_to_menu()
 
+        elif (pil == "9") :
+            clr()
+            print(" _______________________________________________________________________________________") 
+            print("|                                                                        Urut Barang    |")            
+            print("|    1.  Urutkan Berdasarkan Jenis                                                      |")      
+            print("|    2.  Urutkan Berdasarkan Brand                                                      |")      
+            print("|    3.  Urutkan Berdasarkan Warna                                                      |")      
+            print("|    4.  Urutkan Berdasarkan Varian                                                     |")      
+            print("|    5.  Urutkan Berdasarkan Harga                                                      |")           
+            print("|                                                                                       |")   
+            print("|                                                                                       |")    
+            print("|_______________________________________________________________________________________|") 
+
+            pilCari = input("\n\tAnda ingin Mengurutkan Berdasarkan : ")    
+            
+            if (pilCari == "1"): pilCari = "Jenis"
+            elif (pilCari == "2"): pilCari = "Brand"
+            elif (pilCari == "3"): pilCari = "Warna"
+            elif (pilCari == "4"): pilCari = "Varian"
+            elif (pilCari == "5"): pilCari = "Harga"
+
+            key = orderby(pilCari.lower(), items)
+            input("\n\n\nTekan Enter Untuk Kembali ...")
+            menu(key)
 
         elif (pil == "0"):
             print("Terima Kasih Telah Menggunakan Program Ini (●'◡'●)つ !!!")
@@ -827,9 +857,9 @@ def menu(param):
             elif (pilCari == "4"): pilCari = "Varian"
             elif (pilCari == "5"): pilCari = "Harga"
 
-            key = orderby(pilCari.lower(), items)
-            input("\n\n\nTekan Enter Untuk Kembali ...")
-            menu(key)
+            orderby(pilCari.lower(), items)
+            back_to_menu()
+
 
 
         elif (pil == "0"):
