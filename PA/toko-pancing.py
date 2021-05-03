@@ -3,7 +3,7 @@ from datetime import datetime
 from matplotlib import pyplot as plt
 import mysql.connector
 import webbrowser
-
+import getpass
 
 
 
@@ -12,9 +12,31 @@ mycursor = conn.cursor()
 
 # UNTUK MENAMPUNG ISI DARI DATABASE
 items = []
-
+login = False
 NOW = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
 
+def signIn():
+    global login
+    u = ""
+    p = ""
+    try:
+        while(len(p) == 0 or len(u) == 0):  
+            u = input("Username :   ")
+            p = getpass.getpass(prompt='Password :   ')
+            if u.lower() == 'risky' and  p.lower() == 'rrisskyy':
+                print('Welcome..!!!')
+                login = True
+                
+            else:
+                print('The answer entered by you is incorrect..!!!')   
+                input("\nKlik Enter Untuk Melanjutkan ... \n\n")
+                u = "" 
+                p = ""        
+                continue
+    except Exception as error:
+        print('ERROR', error)
+        input("Klik Enter Untuk Melanjutkan ... ")
+    
 
 
 
@@ -433,8 +455,9 @@ def menu(param):
     print("|_______________________________________________________________________________________|")      
     pil = input(" Pilih Menu >>  ")
 
-
-    if (pil == "1"):
+    if (pil == "1" and login == False):
+        signIn()
+    if (pil == "1" and login == True):
         clr()
         print(" _______________________________________________________________________________________")
         print("|                                                                          Menu Kasir   |")      
