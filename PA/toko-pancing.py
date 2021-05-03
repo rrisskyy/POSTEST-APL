@@ -3,13 +3,21 @@ from datetime import datetime
 from matplotlib import pyplot as plt
 import mysql.connector
 import webbrowser
-from os import environ
 
 
 
 
 conn = mysql.connector.connect( host="localhost", user="root", password="", database="toko-pancing" )
 mycursor = conn.cursor()
+
+# UNTUK MENAMPUNG ISI DARI DATABASE
+items = []
+
+NOW = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
+
+
+
+
 
 def clr():
    _ = os.system('clear') if os.name == 'posix' else os.system('cls')
@@ -24,21 +32,6 @@ def query(query):
 
 
 
-def suppress_qt_warnings():
-    environ["QT_DEVICE_PIXEL_RATIO"] = "0"
-    environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
-    environ["QT_SCREEN_SCALE_FACTORS"] = "1"
-    environ["QT_SCALE_FACTOR"] = "1"
-
-
-
-
-
-items = []
-now = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
-
-
-
 def back_to_menu():
     input("\n\n\nTekan Enter Untuk Kembali ...")
     menu(param)
@@ -47,6 +40,8 @@ def back_to_menu():
 
 param = "harga"  
 items = query("SELECT * FROM barang ORDER BY " + param)
+
+
     # "id": item[0][0],
     # "jenis": item[0][1],
     # "brand": item[0][2],
@@ -54,15 +49,15 @@ items = query("SELECT * FROM barang ORDER BY " + param)
     # "warna": item[0][4],
     # "harga": item[0][5],
     # "stok": item[0][6],
-# orders = query("SELECT * FROM orders ORDER BY " + param)
+
 
 
 costumers = query("SELECT * FROM costumers ORDER BY first_name")
 
+terjual = query("SELECT * FROM terjual ORDER BY date")
 
-terjual = query("SELECT * FROM terjual ORDER BY jumlah")
 
-
+# ==========================================================================================================================================================================================================================================================
 def header():
     return (" ____________________________________________________________________________________________________________________________________________________\n" 
           + "|____ID_____|_______JENIS_______|__________BRAND__________|__________VARIAN__________|______WARNA______|______HARGA_______|___STOK___|____NO_SERI____|")
@@ -87,10 +82,17 @@ def header3():
     return (" ===============================================================================================================\n" +
             "                                                 TOKO  PANCING                                                \n"   +
             " ===============================================================================================================\n\n" +
-            f" {now}\n\n" + 
+            f" {NOW}\n\n" + 
             " |                                                            |  JUMLAH  |      HARGA       |      TOTAL       |")
 
 
+# ==========================================================================================================================================================================================================================================================
+
+
+
+
+
+# ==========================================================================================================================================================================================================================================================
 def spacing (item, i):
     a = ''
     if i < 9 :
@@ -141,6 +143,7 @@ def spacing2 (item, i):
     a += str(item[i][8]).ljust(23)  + "|".ljust(3)
     return a
 
+
 def spacing3 (item, i):
     a = ' |'.ljust(3)
     a += str(item[i][0]).ljust(14) + " ".ljust(3)
@@ -151,30 +154,18 @@ def spacing3 (item, i):
     a += str(item[i][3]).ljust(12) + "|".ljust(3)
     return a
 
-def pembayaran(id, jenis, brand, varian, warna, harga, stok, totalHarga, count):
-    result = query(f"SELECT * FROM barang WHERE `id` = {id}")
-    harga = result[0][5] * count
-    modal = result[0][6] * count
-    totalHarga += harga
-    print("Harga Barang  =  ", result[0][5], " x ", count, "  =  ", harga)
-    
-    param2 = "INSERT INTO `terjual` (`id`, `jenis`, `brand`, `varian`, `warna`, `harga`, `modal`, `jumlah`, `date`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    val = (None, jenis, brand, varian, warna, harga, modal, count, now)
-    mycursor.execute(param2, val)
-    conn.commit()
-
-    return totalHarga
-        
+# ==========================================================================================================================================================================================================================================================
 
 
 
+
+# PRINT DAFTAR BARANG
+# ==========================================================================================================================================================================================================================================================
 def daftarBarang(items):
     print(header())
     for i in range(len(items)) :
         print(spacing(items, i))
     print(footer())
-
-
 
 def daftarBarang1(items):
     print("\nHistory Penjualan : \n")
@@ -189,90 +180,19 @@ def daftarBarang2(items):
     for i in range(len(items)) :
         print(spacing3(items, i))
 
-
-
 def daftarOrang(items):
     print(header1())
     for i in range(len(items)) :
         print(spacing1(items, i))
     print(footer1())        
 
-
-
-def cari(items) :  
-    while(True): 
-        keyword = input("\n\nKetikkan Sesuatu Untuk Mencari :     ") 
-        if (keyword == ""):
-            print("Tidak Boleh Kosong!")
-            continue
-        param = f"SELECT * FROM barang WHERE `jenis` LIKE '%{keyword}%' OR `brand` LIKE '%{keyword}%' OR `varian` LIKE '%{keyword}%' OR `warna` LIKE '%{keyword}%'"
-        equalItems = query(param)
-        clr()
-        print(f"\n\n\nHasil Pencarian {keyword} : ")
-        break
-    daftarBarang(equalItems)
-
-    
-
-
-def ascBubbleSort(arr):
-    n = len(arr)
-    for i in range(n):  
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1] :
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-        
-
-
-def descMergeSort(arr):
-	if len(arr) > 1:
-		mid = len(arr)//2
-		L = arr[:mid]
-		R = arr[mid:]
-		descMergeSort(L)
-		descMergeSort(R)
-
-		i = j = k = 0
-
-		while i < len(L) and j < len(R):
-			if L[i][3] < R[j][3]:
-				arr[k] = L[i]
-				i += 1
-			else:
-				arr[k] = R[j]
-				j += 1
-			k += 1
-
-		while i < len(L):
-			arr[k] = L[i]
-			i += 1
-			k += 1
-
-		while j < len(R):
-			arr[k] = R[j]
-			j += 1
-			k += 1
-        
-
-
-
-def orderby(keyword, item):
-    global items
-    print("[1] Ascending")
-    print("[2] Descending")
-    a = input("Pilih Menu :    ")
-    if a == "1": a = "ASC"
-    elif a == "2": a = "DESC"
-
-    param = f"SELECT * FROM barang ORDER BY {keyword} {a}"
-    item = query(param)
-    items = item
-    daftarBarang(items)
-    return keyword
+# ==========================================================================================================================================================================================================================================================
 
 
 
 
+# BARANG SQL
+# ==========================================================================================================================================================================================================================================================
 def tambahBarang(id, jenis, brand, varian, warna, harga, modal, stok) :
     param = "INSERT INTO `barang` (`id`, `jenis`, `brand`, `varian`, `warna`, `harga`, `modal`,`stok`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
     val = (id, jenis, brand, varian, warna, harga, modal, stok)
@@ -304,9 +224,37 @@ def hapusBarang(id) :
     else :
         print("Input yang anda Masukkan SALAH!")
 
+def sequentialSearch(items, x):
+    clr()
+    equalItems = []
+    for i in range(0, len(items)):
+        for j in range(0, len(items[i])):            
+            if (items[i][j] == x):
+                equalItems.append(items[i])
+    daftarBarang(equalItems)
+    return -1  
+    
+
+def orderby(keyword, item):
+    global items
+    print("[1] Ascending")
+    print("[2] Descending")
+    a = input("Pilih Menu :    ")
+    if a == "1": a = "ASC"
+    elif a == "2": a = "DESC"
+
+    param = f"SELECT * FROM barang ORDER BY {keyword} {a}"
+    item = query(param)
+    items = item
+    daftarBarang(items)
+    return keyword
+
+# ==========================================================================================================================================================================================================================================================
 
 
 
+# ORANG SQL
+# ==========================================================================================================================================================================================================================================================
 def tambahOrang(id, first_name, last_name, address, email, phone_number) :
     param1 = "INSERT INTO costumers (id, first_name, last_name, address, email, phone_number) VALUES (%s, %s, %s, %s, %s, %s)"
     val = (id, first_name, last_name, address, email, phone_number)
@@ -373,8 +321,6 @@ def ubah(id, first_name, last_name, address, email, phone_number) :
             print("Pilihan Salah!\n")
             daftarOrang(costumers)
             ubah()
-        
-
 
 def hapusOrang(id) :
     yakin = input("Apakah anda yakin ingin menghapus Orang ini (Y/N) ? :    ")
@@ -386,6 +332,77 @@ def hapusOrang(id) :
         exit
     else :
         print("Input yang anda Masukkan SALAH!")
+
+
+# ==========================================================================================================================================================================================================================================================
+
+
+    
+# SORTING
+# ==========================================================================================================================================================================================================================================================
+def ascBubbleSort(arr):
+    n = len(arr)
+    for i in range(n):  
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1] :
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+        
+def descMergeSort(arr):
+	if len(arr) > 1:
+		mid = len(arr)//2
+		L = arr[:mid]
+		R = arr[mid:]
+		descMergeSort(L)
+		descMergeSort(R)
+
+		i = j = k = 0
+
+		while i < len(L) and j < len(R):
+			if L[i][3] < R[j][3]:
+				arr[k] = L[i]
+				i += 1
+			else:
+				arr[k] = R[j]
+				j += 1
+			k += 1
+
+		while i < len(L):
+			arr[k] = L[i]
+			i += 1
+			k += 1
+
+		while j < len(R):
+			arr[k] = R[j]
+			j += 1
+			k += 1
+    
+
+# ==========================================================================================================================================================================================================================================================
+
+# PEMBAYARAN
+def pembayaran(id, jenis, brand, varian, warna, harga, stok, totalHarga, count):
+    result = query(f"SELECT * FROM barang WHERE `id` = {id}")
+    harga = result[0][5] * count
+    modal = result[0][6] * count
+    totalHarga += harga
+    print("Harga Barang  =  ", result[0][5], " x ", count, "  =  ", harga)
+    
+    param2 = "INSERT INTO `terjual` (`id`, `jenis`, `brand`, `varian`, `warna`, `harga`, `modal`, `jumlah`, `date`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    val = (None, jenis, brand, varian, warna, harga, modal, count, NOW)
+    mycursor.execute(param2, val)
+    conn.commit()
+
+    return totalHarga
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -400,6 +417,7 @@ def menu(param):
     costumers = query("SELECT * FROM costumers ORDER BY first_name")
     terjual = query("SELECT * FROM terjual ORDER BY date")
     clr()
+
     print("".rjust(39))
     print(" _______________________________________________________________________________________")
     print("|                                                     SELAMAT DATANG DI TOKO PANCING    |")
@@ -485,7 +503,7 @@ def menu(param):
                 conn.commit()
                 totalHarga += pembayaran(**kwargs)  
                 
-                # ===================================================================================================================================================================================================================================================================
+    
                 ulang = input("Apakah Anda ingin membeli yang lain? (Y/N) : ")
                 if (ulang.upper() == "Y"):
                     continue
@@ -517,7 +535,7 @@ def menu(param):
                     elif (result > 0):
                         print(f"                                                                                       Kembalian : Rp. {result}\n")
                     break
-                # ===================================================================================================================================================================================================================================================================
+    
             totalHarga = 0  
             back_to_menu()
 
@@ -536,7 +554,6 @@ def menu(param):
             pil = input(" Pilih Menu >>  ")
             
             if (pil == "1"):
-                suppress_qt_warnings()
                 mycursor.execute("SELECT SUM(harga) FROM terjual")
                 untung = mycursor.fetchone()[0]
                 mycursor.execute("SELECT SUM(modal) FROM terjual")
@@ -548,6 +565,7 @@ def menu(param):
                 y = []
                 mycursor.execute("SELECT jenis, SUM(harga - modal) FROM terjual GROUP BY jenis")
                 group = mycursor.fetchall()
+
                 for i in range(len(group)):
                     x.append(group[i][0])
                     y.append(group[i][1])
@@ -775,10 +793,15 @@ def menu(param):
 
 
         elif (pil == "4") :
-            clr()
-            
+            clr()            
             daftarBarang(items)
-            cari(items)
+            while(True): 
+                keyword = input("\n\nKetikkan Sesuatu Untuk Mencari :     ") 
+                if (keyword == ""):
+                    print("Tidak Boleh Kosong!")
+                    continue
+                else: break  
+            sequentialSearch(items, keyword.title())
             back_to_menu() 
 
 
@@ -838,11 +861,16 @@ def menu(param):
 
 
     elif (pil == "4") :
-        clr()
-            
+        clr()            
         daftarBarang(items)
-        cari(items)
-        back_to_menu()  
+        while(True): 
+                keyword = input("\n\nKetikkan Sesuatu Untuk Mencari :     ") 
+                if (keyword == ""):
+                    print("Tidak Boleh Kosong!")
+                    continue
+                else: break
+        sequentialSearch(items, keyword.title())
+        back_to_menu() 
 
     elif (pil == "5") :
         webbrowser.open('http://wa.me/6282158317722')
