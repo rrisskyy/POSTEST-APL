@@ -67,6 +67,7 @@ def back_to_admin(param = "Harga", a = "ASC"):
 
 
 
+
 param = "harga"  
 items = query("SELECT * FROM barang ORDER BY " + param)
 costumers = query("SELECT * FROM costumers ORDER BY first_name")
