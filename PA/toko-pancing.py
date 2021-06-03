@@ -456,7 +456,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
     terjual = query("SELECT * FROM terjual ORDER BY " + paramTerjual)
 
     pil = ''
-    allMenu = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+    allMenu = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     while(pil not in allMenu): 
         clr()
         print(" _______________________________________________________________________________________")
@@ -592,7 +592,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
 
         elif (pil == "2") :
             pil = ''
-            allMenu = ['1', '2', '3']
+            allMenu = ['0', '1', '2', '3']
             while(pil not in allMenu):
                 clr()
                 print(" _______________________________________________________________________________________") 
@@ -662,7 +662,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                 
         elif (pil == "3") :
             pil = ''
-            allMenu = ['1', '2', '3', '4']
+            allMenu = ['0', '1', '2', '3', '4']
             while(pil not in allMenu):
                 clr()
                 print(" _______________________________________________________________________________________") 
