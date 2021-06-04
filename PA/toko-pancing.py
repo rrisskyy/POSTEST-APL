@@ -249,8 +249,9 @@ def sequentialSearch(items, x):
         for j in range(0, len(items[i])):            
             if (items[i][j] == x):
                 equalItems.append(items[i])
+    if (len(equalItems) == 0):
+        print("Barang Tidak Ditemukan")
     daftarBarang(equalItems)
-    return -1  
     
 
 
@@ -387,20 +388,20 @@ def hapusOrang(id) :
     
 # SORTING
 # ==========================================================================================================================================================================================================================================================
-def ascBubbleSort(arr):
+def descBubbleSort(arr):
     n = len(arr)
     for i in range(n-1):  
         for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
+            if arr[j][3] < arr[j+1][3]:
                 arr[j], arr[j+1] = arr[j+1], arr[j]
         
-def descMergeSort(arr):
+def ascMergeSort(arr):
 	if len(arr) > 1:
 		mid = len(arr)//2
 		L = arr[:mid]
 		R = arr[mid:]
-		descMergeSort(L)
-		descMergeSort(R)
+		ascMergeSort(L)
+		ascMergeSort(R)
 
 		i = j = k = 0
 
@@ -423,7 +424,14 @@ def descMergeSort(arr):
 			j += 1
 			k += 1
     
-
+    # 0 Jenis
+    # 1 Brand
+    # 2 Varian
+    # 3 Harga
+    # 4 Jumlah
+    # 5 Harga Satuan
+    
+    # (kwargs["jenis"], kwargs["brand"], kwargs["varian"], kwargs["harga"] * kwargs["count"], kwargs["count"], kwargs["harga"])
 # ==========================================================================================================================================================================================================================================================
 
 # PEMBAYARAN
@@ -528,6 +536,9 @@ def admin():
                         except ValueError:
                             input("Input anda Salah, Tekan Enter untuk melanjutkan!")
                             continue
+                        except IndexError:
+                            input("Barang yang anda cari tidak ada!")
+                            continue
                         
                         updatingStok = 'UPDATE barang SET stok = %s WHERE id = %s'
                         val = (newStok, kwargs["id"])
@@ -560,12 +571,12 @@ def admin():
                                 continue
 
                     print("\n\nUrutkan Struk dari Harga Tertinggi atau Terendah? ")
-                    print("[1] Tertinggi")
-                    print("[2] Terendah ")
+                    print("[1] Terendah")
+                    print("[2] Tertinggi ")
                     while(True):
                         pil = input("Pilih Menu :    ")
-                        if (pil == "1") : descMergeSort(daftarBeli)    
-                        elif (pil == "2") : ascBubbleSort(daftarBeli)   
+                        if (pil == "1") : ascMergeSort(daftarBeli)    
+                        elif (pil == "2") : descBubbleSort(daftarBeli)   
                         else : continue 
                         clr()
                         daftarBarang2(daftarBeli)        
@@ -1122,7 +1133,8 @@ def menu():
                     continue
                 elif(keyword.isdigit()):
                     keyword = int(keyword)
-                    sequentialSearch(items, keyword)
+                    result = sequentialSearch(items, keyword)
+                    
                     break
                 else:
                     sequentialSearch(items, keyword.title())
