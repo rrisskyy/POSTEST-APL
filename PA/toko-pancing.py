@@ -105,7 +105,7 @@ def header3():
 
 
 # ==========================================================================================================================================================================================================================================================
-def spacing (item, i):
+def tabel (item, i):
     a = ''
     if i < 9 :
         a = "|".ljust(3) + "[" + str(i+1) + "] ".ljust(7) + "|".ljust(3)
@@ -119,11 +119,9 @@ def spacing (item, i):
     a += str(item[i][7]).ljust(7)  + "|".ljust(7)
     a += str(item[i][0]).ljust(9)  + "|".ljust(3)
     return a
-
-
   
 
-def spacing1 (item, i):
+def tabel1 (item, i):
     a = ''
     if i < 9 :
         a = "|".ljust(2) + "[" + str(i+1) + "] ".ljust(4) + "|".ljust(3)
@@ -137,8 +135,7 @@ def spacing1 (item, i):
     return a
 
 
-
-def spacing2 (item, i):
+def tabel2 (item, i):
     a = ''
     if i < 9 :
         a = "|".ljust(3) + "[" + str(i+1) + "] ".ljust(5) + "|".ljust(3)
@@ -157,7 +154,7 @@ def spacing2 (item, i):
     return a
 
 
-def spacing3 (item, i):
+def tabel3 (item, i):
     a = ' |'.ljust(3)
     a += str(item[i][0]).ljust(14) + " ".ljust(3)
     a += str(item[i][1]).ljust(19) + " ".ljust(3)
@@ -177,26 +174,26 @@ def spacing3 (item, i):
 def daftarBarang(items):
     print(header())
     for i in range(len(items)) :
-        print(spacing(items, i))
+        print(tabel(items, i))
     print(footer())
 
 def daftarBarang1(items):
     print("\nHistory Penjualan : \n")
     print(header2())
     for i in range(len(items)) :
-        print(spacing2(items, i))
+        print(tabel2(items, i))
     print(footer2())
 
 def daftarBarang2(items):
     print("\nStruk : \n")
     print(header3())
     for i in range(len(items)) :
-        print(spacing3(items, i))
+        print(tabel3(items, i))
 
 def daftarOrang(items):
     print(header1())
     for i in range(len(items)) :
-        print(spacing1(items, i))
+        print(tabel1(items, i))
     print(footer1())        
 
 # ==========================================================================================================================================================================================================================================================
@@ -390,7 +387,7 @@ def ascBubbleSort(arr):
     n = len(arr)
     for i in range(n):  
         for j in range(0, n-i-1):
-            if arr[j] > arr[j+1] :
+            if arr[j] > arr[j+1]:
                 arr[j], arr[j+1] = arr[j+1], arr[j]
         
 def descMergeSort(arr):
@@ -558,8 +555,8 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                     print("[2] Terendah ")
                     while(True):
                         pil = input("Pilih Menu :    ")
-                        if (pil == "1") : ascBubbleSort(daftarBeli)    
-                        elif (pil == "2") : descMergeSort(daftarBeli)   
+                        if (pil == "1") : descMergeSort(daftarBeli)    
+                        elif (pil == "2") : ascBubbleSort(daftarBeli)   
                         else : continue 
                         clr()
                         daftarBarang2(daftarBeli)        
@@ -965,8 +962,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
 
         else : 
             input("Input anda Salah, Tekan Enter untuk melanjutkan!")
-        return [param, a]
-
+        
 
 
 
@@ -996,8 +992,7 @@ def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = 
         signIn()
     if (pil == "1" and login == True):
         result = admin(param = param, a = a)
-        param = result[0]
-        a = result[1]
+        param, a = result[0], result[1]  
         back_to_menu(param = param, a = a)
 
     elif (pil == "2"):
