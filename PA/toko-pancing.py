@@ -13,31 +13,26 @@ mycursor = conn.cursor()
 
 # UNTUK MENAMPUNG ISI DARI DATABASE
 items = []
+NOW = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
 
 login = False
-NOW = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
 def signIn():
     global login
     u = ""
     p = ""
-    try:
-        while(len(p) == 0 or len(u) == 0):  
-            u = input("Username :   ")
-            p = getpass.getpass(prompt='Password :   ')
-            if u.lower() == 'admin' and  p.lower() == 'admin':
-                print('\n\nWelcome..!!!')
-                login = True
-                
-            else:
-                print(' Username atau Password anda salah..!!!')   
-                input("\nKlik Enter Untuk Melanjutkan ... \n\n")
-                u = "" 
-                p = ""        
-                continue
+    while(len(p) == 0 or len(u) == 0):  
+        u = input("Username :   ")
+        p = getpass.getpass(prompt='Password :   ')
+        if u.lower() == 'admin' and  p.lower() == 'admin':
+            print('\n\nWelcome..!!!')
+            login = True
             
-    except Exception as error:
-        print('ERROR', error)
-        input("Klik Enter Untuk Melanjutkan ... ")
+        else:
+            print(' Username atau Password anda salah..!!!')   
+            input("\nKlik Enter Untuk Melanjutkan ... \n\n")
+            u = "" 
+            p = ""        
+            continue
 
 def signOut():
     global login
