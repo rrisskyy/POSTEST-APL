@@ -23,14 +23,3 @@ CARA MENGGUNAKAN APLIKASI
 
 
 
-
-
-
-
-
-
-
-
-***Kalau ada yang mau ditanyakan, chat Risky***
-
-
