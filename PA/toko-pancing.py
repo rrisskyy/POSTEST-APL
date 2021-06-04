@@ -52,19 +52,20 @@ def commit(param, val):
     conn.commit()
 
 
-def back_to_menu(param = "Harga", a = "ASC"):
+def back_to_menu():
     input("\n\n\nTekan Enter Untuk Kembali ...")
-    menu(param = param, a = a)
+    menu()
 
-def back_to_admin(param = "Harga", a = "ASC"):
+def back_to_admin():
     input("\n\n\nTekan Enter Untuk Kembali ...")
-    admin(param = param, a = a)
+    admin()
 
 
 
 
 param = "harga"  
-items = query("SELECT * FROM barang ORDER BY " + param)
+a = "ASC"
+items = query("SELECT * FROM barang ORDER BY " + param + " " + a)
 costumers = query("SELECT * FROM costumers ORDER BY first_name")
 terjual = query("SELECT * FROM terjual ORDER BY date")
 
@@ -441,12 +442,12 @@ def pembayaran(id, jenis, brand, varian, warna, harga, stok, totalHarga, count):
 # ==========================================================================================================================================================================================================================================================
 
 
-def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = "ASC"):
+def admin():
+    global param, a
     signOut()
-    items = query(f"SELECT * FROM barang ORDER BY {param} {a}")
-    costumers = query("SELECT * FROM costumers ORDER BY " + paramOrang)
-    terjual = query("SELECT * FROM terjual ORDER BY " + paramTerjual)
-
+    items = query("SELECT * FROM barang ORDER BY " + param + " " + a)
+    costumers = query("SELECT * FROM costumers ORDER BY first_name")
+    terjual = query("SELECT * FROM terjual ORDER BY date")
     pil = ''
     allMenu = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     while(pil not in allMenu): 
@@ -506,16 +507,19 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                                 "count": count
                                 }
                             
-                            daftarBeli.append((kwargs["jenis"], kwargs["brand"], kwargs["varian"], kwargs["harga"] * kwargs["count"], kwargs["count"], kwargs["harga"]))
-                            newStok = kwargs["stok"] - kwargs["count"]
+                            
                             if (kwargs["stok"] < kwargs["count"]) :
                                 beli = input(f"Barang yang tersedia tidak cukup, Maukah anda membeli sebanyak {kwargs['stok']} (Y/N) ?")
                                 if beli.upper() == "Y":
                                     newStok = kwargs["stok"]
+                                    kwargs["count"] = kwargs["stok"]
                                 elif beli.upper() == "N":
                                     daftarBeli.pop()
                                     continue
-                                    
+
+                            daftarBeli.append((kwargs["jenis"], kwargs["brand"], kwargs["varian"], kwargs["harga"] * kwargs["count"], kwargs["count"], kwargs["harga"]))
+                            newStok = kwargs["stok"] - kwargs["count"]        
+
                         except ValueError:
                             input("Input anda Salah, Tekan Enter untuk melanjutkan!")
                             continue
@@ -618,15 +622,15 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                         plt.bar(x,y, color = ['#15FA00'])
                         plt.title(f'Keuntungan Bulan Ini: Rp. {untung - modal}')
                         plt.show()
-                        back_to_admin(param = param, a = a)
+                        back_to_admin()
                     except TypeError:
                         print("Tidak ada Penjualan Bulan ini!")
-                        back_to_admin(param = param, a = a)
+                        back_to_admin()
 
                 elif (pil == "2"):
                     clr()
                     daftarBarang1(terjual)
-                    back_to_admin(param = param, a = a)
+                    back_to_admin()
                     
                 elif (pil == "3"):
                     while (True):
@@ -646,7 +650,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                     back_to_admin()
                     
                 elif (pil == "0"):
-                    admin(param = param, a = a)
+                    admin()
 
                 else: 
                     input("Input anda Salah, Tekan Enter untuk melanjutkan!")
@@ -673,7 +677,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                 if (pil == "1"):
                     clr()
                     daftarOrang(costumers)
-                    back_to_admin(param = param, a = a)
+                    back_to_admin()
 
                 elif(pil == "2"):
                     print("\n\nTambah Pelanggan\n\n")
@@ -712,7 +716,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                             print("Nomor Telepon tidak boleh kosong")
 
                     tambahOrang(None, firstName, lastName, address, email, phoneNumber)
-                    back_to_admin(param = param, a = a)
+                    back_to_admin()
 
 
                 elif(pil == "3"):
@@ -742,7 +746,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                         except IndexError:
                             input("Mohon Maaf, Orang yang ingin diubahh tidak ada di data!\n\n")
                             continue
-                    back_to_admin(param = param, a = a)
+                    back_to_admin()
 
                 elif(pil == "4"):
                     while(True):
@@ -763,10 +767,10 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                         except IndexError:
                             input("Mohon Maaf, Orang yang ingin dihapus tidak ada di data!\n\n")
                             continue
-                    back_to_admin(param = param, a = a)
+                    back_to_admin()
 
                 elif (pil == "0"):
-                    admin(param = param, a = a)
+                    admin()
 
                 else: 
                     input("Input anda Salah, Tekan Enter untuk melanjutkan!")
@@ -777,7 +781,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
         elif (pil == "4") :
             clr()
             daftarBarang(items)
-            back_to_admin(param = param, a = a)
+            back_to_admin()
 
 
         elif (pil == "5") :
@@ -832,7 +836,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
             
         
             tambahBarang(None, jenis, brand, varian, warna, harga, modal, stok)
-            back_to_admin(param = param, a = a)
+            back_to_admin()
 
         
         
@@ -855,7 +859,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                 except IndexError:
                     input("Mohon Maaf, Barang yang ingin dihapus tidak ada di data!\n\n")
                     continue
-            back_to_admin(param = param, a = a)        
+            back_to_admin()        
 
         elif (pil == "7") :
             clr()
@@ -876,7 +880,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                 except IndexError:
                     input("Mohon Maaf, Barang yang ingin diubah tidak ada di data!\n\n")
                     continue
-            back_to_admin(param = param, a = a)        
+            back_to_admin()        
             
 
         elif (pil == "8") :
@@ -899,7 +903,7 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                 except IndexError:
                     input("Mohon Maaf, Barang yang ingin diubah tidak ada di data!\n\n")
                     continue
-            back_to_admin(param = param, a = a)      
+            back_to_admin()      
 
 
         elif (pil == "9") :
@@ -915,27 +919,28 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
             print("|       0.  Kembali                                                                     |")    
             print("|                                                                                       |") 
             print("|_______________________________________________________________________________________|") 
-
-            while(True):
-                pilUrut = input("\n\tAnda ingin Mengurutkan Berdasarkan : ")    
+            pil = ''
+            allMenu = ['0', '1', '2', '3', '4', '5']
+            while(pil not in allMenu):
+                pil = input("\n\tAnda ingin Mengurutkan Berdasarkan : ")    
                 
-                if (pilUrut == "1"):
-                    pilUrut = "Jenis"
+                if (pil == "1"):
+                    pil = "Jenis"
                     break
-                elif (pilUrut == "2"):
-                    pilUrut = "Brand"
+                elif (pil == "2"):
+                    pil = "Brand"
                     break
-                elif (pilUrut == "3"): 
-                    pilUrut = "Warna"
+                elif (pil == "3"): 
+                    pil = "Warna"
                     break
-                elif (pilUrut == "4"): 
-                    pilUrut = "Varian"
+                elif (pil == "4"): 
+                    pil = "Varian"
                     break
-                elif (pilUrut == "5"): 
-                    pilUrut = "Harga"
+                elif (pil == "5"): 
+                    pil = "Harga"
                     break
-                elif (pilUrut == "0"):
-                    admin(param = param, a = a)
+                elif (pil == "0"):
+                    admin()
                 else: 
                     print("Input anda Salah, Masukkan Ulang!")
                     continue
@@ -953,21 +958,21 @@ def admin(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a =
                 else:
                     print("Input anda salah!")
 
-            param = orderby(pilUrut.lower(), items, a)
+            param = orderby(pil.lower(), items, a)
 
             input("\n\n\nTekan Enter Untuk Kembali ...")
-            admin(param = param, a = a)
+            admin()
         elif (pil == "0") :
-            return [param, a]    
-
+            menu()
         else : 
             input("Input anda Salah, Tekan Enter untuk melanjutkan!")
         
 
 
 
-def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = "ASC"):
-    items = query(f"SELECT * FROM barang ORDER BY {param} {a}")
+def menu():
+    global param, a
+    items = query("SELECT * FROM barang ORDER BY " + param + " " + a)
     costumers = query("SELECT * FROM costumers ORDER BY first_name")
     terjual = query("SELECT * FROM terjual ORDER BY date")
     clr()
@@ -991,9 +996,8 @@ def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = 
     if (pil == "1" and login == False):
         signIn()
     if (pil == "1" and login == True):
-        result = admin(param = param, a = a)
-        param, a = result[0], result[1]  
-        back_to_menu(param = param, a = a)
+        result = admin()
+        menu()
 
     elif (pil == "2"):
         clr()
@@ -1015,7 +1019,7 @@ def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = 
             clr()
 
             daftarBarang(items)
-            back_to_menu(param = param, a = a)
+            back_to_menu()
             
             
         elif (pil == "2") :
@@ -1023,7 +1027,7 @@ def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = 
 
             items = query(f"SELECT * FROM barang WHERE stok != 0 ORDER BY {param} {a}")
             daftarBarang(items)
-            back_to_menu(param = param, a = a)
+            back_to_menu()
 
 
         elif (pil == "3") :
@@ -1031,7 +1035,7 @@ def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = 
 
             items = query(f"SELECT * FROM barang WHERE stok = 0 ORDER BY {param} {a}")
             daftarBarang(items)
-            back_to_menu(param = param, a = a)
+            back_to_menu()
 
 
         elif (pil == "4") :
@@ -1050,11 +1054,11 @@ def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = 
                 else:
                     sequentialSearch(items, keyword.title())
                     break
-            back_to_menu(param = param, a = a) 
+            back_to_menu() 
 
 
         elif (pil == "0"):
-            menu(param = param, a = a)
+            menu()
 
     elif (pil == "3") :
         clr()
@@ -1071,25 +1075,25 @@ def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = 
         print("|_______________________________________________________________________________________|") 
 
         while(True):
-            pilUrut = input("\n\tAnda ingin Mengurutkan Berdasarkan : ")    
+            pil = input("\n\tAnda ingin Mengurutkan Berdasarkan : ")    
             
-            if (pilUrut == "1"):
-                pilUrut = "Jenis"
+            if (pil == "1"):
+                pil = "Jenis"
                 break
-            elif (pilUrut == "2"):
-                pilUrut = "Brand"
+            elif (pil == "2"):
+                pil = "Brand"
                 break
-            elif (pilUrut == "3"): 
-                pilUrut = "Warna"
+            elif (pil == "3"): 
+                pil = "Warna"
                 break
-            elif (pilUrut == "4"): 
-                pilUrut = "Varian"
+            elif (pil == "4"): 
+                pil = "Varian"
                 break
-            elif (pilUrut == "5"): 
-                pilUrut = "Harga"
+            elif (pil == "5"): 
+                pil = "Harga"
                 break
-            elif (pilUrut == "0"):
-                admin(param = param, a = a)
+            elif (pil == "0"):
+                menu()
             else: 
                 print("Input anda Salah, Masukkan Ulang!")
                 continue
@@ -1107,7 +1111,7 @@ def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = 
             else:
                 print("Input anda salah!")
 
-        orderby(pilUrut.lower(), items, a)
+        orderby(pil.lower(), items, a)
 
         back_to_menu()
 
@@ -1128,7 +1132,7 @@ def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = 
                 else:
                     sequentialSearch(items, keyword.title())
                     break
-        back_to_menu(param = param, a = a) 
+        back_to_menu() 
 
     elif (pil == "5") :
         clr()
@@ -1150,18 +1154,18 @@ def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = 
             if pil == "1": 
                 webbrowser.open('https://wa.me/6281240741502')
                 _run = False
-                menu(param = param, a = a)
+                menu()
 
             elif pil == "2": 
                 webbrowser.open('https://wa.me/6282251266939')
                 _run = False
-                menu(param = param, a = a)
+                menu()
             elif pil == "3": 
                 webbrowser.open('https://wa.me/6282158317722')
                 _run = False
-                menu(param = param, a = a)
+                menu()
             elif pil == "0": 
-                back_to_menu(param = param, a = a)
+                back_to_menu()
             else : 
                 print("\n\nInput anda salah!")
                 input("Tekan Enter Untuk Melanjutkan...")
@@ -1174,7 +1178,7 @@ def menu(param = "Harga", paramOrang = "first_name", paramTerjual = "date", a = 
         exit
     
     else :
-        menu(param = param, a = a)
+        menu()
 
 
-menu(param = param, a = "ASC")
+menu()
