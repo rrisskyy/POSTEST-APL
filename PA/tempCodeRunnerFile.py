@@ -1,1 +1,1 @@
-Barang tidak ditemukan
+ fig = plt.figure

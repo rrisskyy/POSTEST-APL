@@ -65,7 +65,7 @@ def back_to_admin():
 
 
 
-param = "harga"  
+param = "brand"  
 a = "ASC"
 items = query("SELECT * FROM barang ORDER BY " + param + " " + a)
 costumers = query("SELECT * FROM costumers ORDER BY first_name")
@@ -384,7 +384,7 @@ def hapusOrang(id) :
 # ==========================================================================================================================================================================================================================================================
 
 
-    
+
 # SORTING
 # ==========================================================================================================================================================================================================================================================
 def descBubbleSort(arr):
@@ -539,6 +539,7 @@ def admin():
                             input("Barang yang anda cari tidak ada!")
                             continue
                         
+
                         updatingStok = 'UPDATE barang SET stok = %s WHERE id = %s'
                         val = (newStok, kwargs["id"])
                         commit(updatingStok, val)
@@ -631,6 +632,8 @@ def admin():
                         mycursor.execute("SELECT jenis, SUM(harga - modal) FROM terjual GROUP BY jenis")
                         group = mycursor.fetchall()
 
+
+                        
                         for i in range(len(group)):
                             x.append(group[i][0])
                             y.append(group[i][1])
