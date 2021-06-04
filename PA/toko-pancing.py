@@ -7,15 +7,18 @@ import getpass
 
 
 
+
 conn = mysql.connector.connect( host="localhost", user="root", password="", database="toko-pancing" )
 
 mycursor = conn.cursor()
 
 # UNTUK MENAMPUNG ISI DARI DATABASE
 items = []
+
 NOW = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
 
 login = False
+
 def signIn():
     global login
     u = ""
@@ -462,7 +465,7 @@ def admin():
         print("|                                                                                       |")      
         print("|_______________________________________________________________________________________|")      
         print("|                                                                                       |")      
-        print("|       4.  Lihat Daftar Barang                                                         |")      
+        print("|       4.  Lihat Semua Barang                                                          |")      
         print("|       5.  Lihat Barang Tersedia                                                       |")      
         print("|       6.  Lihat Barang Yang Kehabisan STOK                                            |")          
         print("|       7.  Urutkan Barang                                                              |")
@@ -749,7 +752,7 @@ def admin():
                             input("Mohon Maaf, Orang yang ingin diubahh tidak ada di data!\n\n")
                             continue
                     back_to_admin()
-
+                
                 elif(pil == "4"):
                     while(True):
                         try:
@@ -777,7 +780,6 @@ def admin():
                 else: 
                     input("Input anda Salah, Tekan Enter untuk melanjutkan!")
                     continue
-                
 
 
         elif (pil == "4") :
@@ -785,130 +787,22 @@ def admin():
             daftarBarang(items)
             back_to_admin()
 
-
         elif (pil == "5") :
-            jenis = ''
-            brand = ''
-            varian = ''
-            warna = ''
-            harga = ''
-            modal = ''
-            stok = ''
-            while(jenis == ''):
-                jenis = input("Masukkan Jenis Barang :   ")
-                if (jenis == ''):
-                    print("Jenis Tidak Boleh Kosong!")
-            while(brand == ''):
-                brand = input("Masukkan Merk Barang :    ")
-                if (brand == ''):
-                    print("Brand Tidak Boleh Kosong!")
-            while(varian == ''):
-                varian = input("Masukkan Varian Barang :  ")
-                if (varian == ''):
-                    print("Varian Tidak Boleh Kosong!")
-            while(warna == ''):
-                warna = input("Masukkan Warna Barang :   ")
-                if (warna == ''):
-                    print("Warna Tidak Boleh Kosong!")
-            while(harga == ''):
-                try:
-                    harga = int(input("Masukkan Harga Barang :   "))
-                    if (harga == ''):
-                        print("Harga Tidak Boleh Kosong!")
-                except ValueError:
-                    input("Harga Harus Berupa Angka!")
-                    continue
-            while(modal == ''):
-                try:
-                    modal = int(input("Masukkan Harga Modal :   "))
-                    if (modal == ''):
-                        print("Modal Tidak Boleh Kosong!")
-                except ValueError:
-                    input("Modal Harus Berupa Angka!")
-                    continue
-            while(stok == ''):
-                try:
-                    stok = int(input("Masukkan Stok Barang :    "))
-                    if (stok == ''):
-                        print("Stok Tidak Boleh Kosong!")
-                except ValueError:
-                    input("Stok Harus Berupa Angka!")
-                    continue
+            clr()
+            items = query(f"SELECT * FROM barang WHERE stok != 0 ORDER BY {param} {a}")
+            daftarBarang(items)
+            back_to_menu()
 
-            
-        
-            tambahBarang(None, jenis, brand, varian, warna, harga, modal, stok)
-            back_to_admin()
 
-        
-        
         elif (pil == "6") :
             clr()
+
+            items = query(f"SELECT * FROM barang WHERE stok = 0 ORDER BY {param} {a}")
             daftarBarang(items)
+            back_to_menu()        
 
-            while(True):
-                try:
-                    pil = int(input("\nPilihlah Barang Yang Ingin Anda Hapus (ID) :      "))
-                    pil -= 1    
-                    id = items[pil][0]
-                    
-                    hapusBarang(id)
-                    break
-
-                except ValueError:
-                    input("Input anda Salah, Tekan Enter untuk melanjutkan!")
-                    continue
-                except IndexError:
-                    input("Mohon Maaf, Barang yang ingin dihapus tidak ada di data!\n\n")
-                    continue
-            back_to_admin()        
 
         elif (pil == "7") :
-            clr()
-            daftarBarang(items)
-
-            while(True):
-                try:
-                    pil = int(input("\nPilihlah Barang Yang Ingin Anda Ubah (ID) :      "))
-                    pil -= 1    
-                    id = items[pil][0]
-
-                    ubahHargaBarang(id)
-                    break
-                    
-                except ValueError:
-                    input("Input anda Salah, Tekan Enter untuk melanjutkan!")
-                    continue
-                except IndexError:
-                    input("Mohon Maaf, Barang yang ingin diubah tidak ada di data!\n\n")
-                    continue
-            back_to_admin()        
-            
-
-        elif (pil == "8") :
-            clr()
-            daftarBarang(items)
-
-            while(True):
-                try:
-                    pil = int(input("\nPilihlah Barang Yang Ingin Anda Tambah Stoknya (ID) :      "))
-                    pil -= 1    
-                    id = items[pil][0]
-                    stok = items[pil][7]
-                    tambahStok(stok, id)
-                    break
-                    
-                    
-                except ValueError:
-                    input("Input anda Salah, Tekan Enter untuk melanjutkan!")
-                    continue
-                except IndexError:
-                    input("Mohon Maaf, Barang yang ingin diubah tidak ada di data!\n\n")
-                    continue
-            back_to_admin()      
-
-
-        elif (pil == "9") :
             clr()
             print(" _______________________________________________________________________________________") 
             print("|                                                                        Urut Barang    |")            
@@ -964,11 +858,132 @@ def admin():
 
             input("\n\n\nTekan Enter Untuk Kembali ...")
             admin()
+
+        elif (pil == "8") :
+            jenis = ''
+            brand = ''
+            varian = ''
+            warna = ''
+            harga = ''
+            modal = ''
+            stok = ''
+            while(jenis == ''):
+                jenis = input("Masukkan Jenis Barang :   ")
+                if (jenis == ''):
+                    print("Jenis Tidak Boleh Kosong!")
+            while(brand == ''):
+                brand = input("Masukkan Merk Barang :    ")
+                if (brand == ''):
+                    print("Brand Tidak Boleh Kosong!")
+            while(varian == ''):
+                varian = input("Masukkan Varian Barang :  ")
+                if (varian == ''):
+                    print("Varian Tidak Boleh Kosong!")
+            while(warna == ''):
+                warna = input("Masukkan Warna Barang :   ")
+                if (warna == ''):
+                    print("Warna Tidak Boleh Kosong!")
+            while(harga == ''):
+                try:
+                    harga = int(input("Masukkan Harga Barang :   "))
+                    if (harga == ''):
+                        print("Harga Tidak Boleh Kosong!")
+                except ValueError:
+                    input("Harga Harus Berupa Angka!")
+                    continue
+            while(modal == ''):
+                try:
+                    modal = int(input("Masukkan Harga Modal :   "))
+                    if (modal == ''):
+                        print("Modal Tidak Boleh Kosong!")
+                except ValueError:
+                    input("Modal Harus Berupa Angka!")
+                    continue
+            while(stok == ''):
+                try:
+                    stok = int(input("Masukkan Stok Barang :    "))
+                    if (stok == ''):
+                        print("Stok Tidak Boleh Kosong!")
+                except ValueError:
+                    input("Stok Harus Berupa Angka!")
+                    continue
+
+            
+        
+            tambahBarang(None, jenis, brand, varian, warna, harga, modal, stok)
+            back_to_admin()
+
+        
+        
+        elif (pil == "9") :
+            clr()
+            daftarBarang(items)
+
+            while(True):
+                try:
+                    pil = int(input("\nPilihlah Barang Yang Ingin Anda Hapus (ID) :      "))
+                    pil -= 1    
+                    id = items[pil][0]
+                    
+                    hapusBarang(id)
+                    break
+
+                except ValueError:
+                    input("Input anda Salah, Tekan Enter untuk melanjutkan!")
+                    continue
+                except IndexError:
+                    input("Mohon Maaf, Barang yang ingin dihapus tidak ada di data!\n\n")
+                    continue
+            back_to_admin()        
+
+        elif (pil == "10") :
+            clr()
+            daftarBarang(items)
+
+            while(True):
+                try:
+                    pil = int(input("\nPilihlah Barang Yang Ingin Anda Ubah (ID) :      "))
+                    pil -= 1    
+                    id = items[pil][0]
+
+                    ubahHargaBarang(id)
+                    break
+                    
+                except ValueError:
+                    input("Input anda Salah, Tekan Enter untuk melanjutkan!")
+                    continue
+                except IndexError:
+                    input("Mohon Maaf, Barang yang ingin diubah tidak ada di data!\n\n")
+                    continue
+            back_to_admin()        
+            
+
+        elif (pil == "11") :
+            clr()
+            daftarBarang(items)
+
+            while(True):
+                try:
+                    pil = int(input("\nPilihlah Barang Yang Ingin Anda Tambah Stoknya (ID) :      "))
+                    pil -= 1    
+                    id = items[pil][0]
+                    stok = items[pil][7]
+                    tambahStok(stok, id)
+                    break
+                    
+                    
+                except ValueError:
+                    input("Input anda Salah, Tekan Enter untuk melanjutkan!")
+                    continue
+                except IndexError:
+                    input("Mohon Maaf, Barang yang ingin diubah tidak ada di data!\n\n")
+                    continue
+            back_to_admin()      
+
         elif (pil == "0") :
             menu()
         else : 
             input("Input anda Salah, Tekan Enter untuk melanjutkan!")
-        
 
 
 
@@ -983,7 +998,7 @@ def menu():
     print(" _______________________________________________________________________________________")
     print("|                                                     SELAMAT DATANG DI TOKO PANCING    |")
     print("|       1.  Admin                                                                       |")      
-    print("|       2.  Lihat Daftar Barang                                                         |")      
+    print("|       2.  Lihat Barang                                                                |")      
     print("|       3.  Urutkan Barang                                                              |")      
     print("|       4.  Cari Barang                                                                 |")         
     print("|       5.  Hubungi Admin                                                               |")         
@@ -1007,8 +1022,7 @@ def menu():
         print("|                                                                      Daftar Barang    |")          
         print("|       1.  Lihat Semua Barang                                                          |")      
         print("|       2.  Lihat Barang Tersedia                                                       |")      
-        print("|       3.  Lihat Barang Yang Kehabisan STOK                                            |")      
-        print("|       4.  Cari Barang                                                                 |")      
+        print("|       3.  Lihat Barang Yang Kehabisan STOK                                            |")          
         print("|                                                                                       |")   
         print("|       0.  Kembali                                                                     |")
         print("|                                                                                       |") 
@@ -1026,7 +1040,6 @@ def menu():
             
         elif (pil == "2") :
             clr()
-
             items = query(f"SELECT * FROM barang WHERE stok != 0 ORDER BY {param} {a}")
             daftarBarang(items)
             back_to_menu()
@@ -1038,26 +1051,6 @@ def menu():
             items = query(f"SELECT * FROM barang WHERE stok = 0 ORDER BY {param} {a}")
             daftarBarang(items)
             back_to_menu()
-
-
-        elif (pil == "4") :
-            clr()            
-
-            daftarBarang(items)
-            while(True): 
-                keyword = input("\n\nKetikkan Sesuatu Untuk Mencari :     ") 
-                if (keyword == ""):
-                    print("Tidak Boleh Kosong!")
-                    continue
-                elif(keyword.isdigit()):
-                    keyword = int(keyword)
-                    sequentialSearch(items, keyword)
-                    break
-                else:
-                    sequentialSearch(items, keyword.title())
-                    break
-            back_to_menu() 
-
 
         elif (pil == "0"):
             menu()
