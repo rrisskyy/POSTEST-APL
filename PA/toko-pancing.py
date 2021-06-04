@@ -7,7 +7,6 @@ import getpass
 
 
 
-
 conn = mysql.connector.connect( host="localhost", user="root", password="", database="toko-pancing" )
 
 mycursor = conn.cursor()
