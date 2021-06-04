@@ -386,7 +386,7 @@ def hapusOrang(id) :
 # ==========================================================================================================================================================================================================================================================
 def ascBubbleSort(arr):
     n = len(arr)
-    for i in range(n):  
+    for i in range(n-1):  
         for j in range(0, n-i-1):
             if arr[j] > arr[j+1]:
                 arr[j], arr[j+1] = arr[j+1], arr[j]
@@ -463,11 +463,13 @@ def admin():
         print("|_______________________________________________________________________________________|")      
         print("|                                                                                       |")      
         print("|       4.  Lihat Daftar Barang                                                         |")      
-        print("|       5.  Tambah Barang                                                               |")      
-        print("|       6.  Hapus Barang                                                                |")      
-        print("|       7.  Ubah Harga                                                                  |")      
-        print("|       8.  Tambah Stok                                                                 |")
-        print("|       9.  Urutkan Barang                                                              |")      
+        print("|       5.  Lihat Barang Tersedia                                                       |")      
+        print("|       6.  Lihat Barang Yang Kehabisan STOK                                            |")          
+        print("|       7.  Urutkan Barang                                                              |")
+        print("|       8.  Tambah Barang                                                               |")      
+        print("|       9.  Hapus Barang                                                                |")      
+        print("|       10. Ubah Harga                                                                  |")      
+        print("|       11. Tambah Stok                                                                 |")      
         print("|                                                                                       |")      
         print("|       0.  Kembali                                                                     |")
         print("|                                                                                       |")      
