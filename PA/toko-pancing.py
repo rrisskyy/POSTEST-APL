@@ -122,7 +122,7 @@ def tabel (item, i):
     a += str(item[i][7]).ljust(7)  + "|".ljust(7)
     a += str(item[i][0]).ljust(9)  + "|".ljust(3)
     return a
-  
+#   prettytable
 
 def tabel1 (item, i):
     a = ''
@@ -804,7 +804,7 @@ def admin():
             clr()
             items = query(f"SELECT * FROM barang WHERE stok != 0 ORDER BY {param} {a}")
             daftarBarang(items)
-            back_to_menu()
+            back_to_admin()
 
 
         elif (pil == "6") :
@@ -812,7 +812,7 @@ def admin():
 
             items = query(f"SELECT * FROM barang WHERE stok = 0 ORDER BY {param} {a}")
             daftarBarang(items)
-            back_to_menu()        
+            back_to_admin()        
 
 
         elif (pil == "7") :

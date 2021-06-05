@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2021 at 04:53 PM
+-- Generation Time: May 23, 2021 at 05:59 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.11
 
@@ -52,25 +52,24 @@ INSERT INTO `barang` (`id`, `jenis`, `brand`, `varian`, `warna`, `harga`, `modal
 (15, 'Joran', 'Koinobori', 'NIKKI', 'Merah', 70000, 35000, 1),
 (17, 'Joran', 'Golden', 'Surf', 'Hitam', 115000, 45000, 5),
 (18, 'Joran', 'Power Rod', 'NEW', 'Hitam', 115000, 60000, 3),
-(20, 'Hook', 'Sigma', 'Carbon', 'Kuning', 4000, 2000, 42),
+(20, 'Hook', 'Sigma', 'Carbon', 'Kuning', 4000, 2000, 123),
 (21, 'Hook', 'Owner', 'Carbon', 'Putih', 30000, 21000, 41),
-(22, 'Joran', 'Bamboo', 'Bamboo', 'Hitam', 85000, 45000, 0),
 (25, 'Hook', 'Kaizen', 'Carbon', 'Silver', 9000, 5100, 100),
-(27, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 0),
-(28, 'Hook', 'Carbon', 'Plus', 'Biru', 7000, 4600, 33),
+(27, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 4000, 1900, 38),
+(28, 'Hook', 'Carbon', 'Plus', 'Biru', 7000, 4600, 25),
 (30, 'Reel', 'Daido', 'Plastik', 'Putih', 40000, 23000, 8),
 (31, 'Joran', 'Bamboo', 'Katana', 'Gold', 85000, 45000, 2),
 (32, 'Joran', 'Ouster', 'Rocket', 'Biru', 80000, 40000, 3),
 (33, 'Bundle', 'Pioneer', 'Paket 1', 'Merah', 190000, 125000, 3),
 (34, 'Bundle', 'Pioneer', 'Paket 2', 'Biru', 135000, 70000, 2),
-(35, 'Hook', 'Charm', 'Carbon', 'Hitam', 8000, 4100, 240),
-(36, 'Hook', 'Carbon', 'Mix', 'Hitam', 8000, 4100, 152),
+(35, 'Hook', 'Charm', 'Carbon', 'Hitam', 9000, 4100, 213),
+(36, 'Hook', 'Carbon', 'Mix', 'Hitam', 9000, 4100, 136),
 (37, 'Snap', 'Daido', 'Fastlock', 'Hitam', 10000, 5000, 21),
 (38, 'Snap', 'Pioneer', 'Hooks-Snap', 'Hitam', 10000, 5000, 18),
-(39, 'Kili-Kili', 'Pro - Katsu', '3 Mata', 'Putih', 8000, 4000, 16),
-(40, 'Kili-Kili', 'Pro - katsu', '2 Mata', 'Hitam', 8000, 4000, 40),
+(39, 'Kili-Kili', 'Pro - Katsu', '3 Mata', 'Putih', 4000, 4000, 16),
+(40, 'Kili-Kili', 'Pro - katsu', '2 Mata', 'Hitam', 4000, 4000, 40),
 (41, 'Stopper', 'Pioneer', 'M (2)', 'Kuning', 8000, 4000, 40),
-(42, 'Kili-Kili', 'Golden Glake', '2 Mata', 'Silver', 8000, 4000, 40),
+(42, 'Kili-Kili', 'Golden Glake', '2 Mata', 'Silver', 4000, 4000, 39),
 (43, 'Senar', 'Penyu', 'Nylon', 'Putih', 20000, 12000, 1),
 (44, 'Senar', 'Trumph', 'PE', 'Biru', 35000, 20000, 15),
 (45, 'Senar', 'Penyu', 'Nylon', 'Biru', 20000, 12000, 5),
@@ -90,7 +89,7 @@ CREATE TABLE `costumers` (
   `last_name` varchar(128) NOT NULL,
   `address` varchar(255) NOT NULL,
   `email` varchar(128) NOT NULL,
-  `phone_number` bigint(11) NOT NULL
+  `phone_number` varchar(18) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -98,8 +97,9 @@ CREATE TABLE `costumers` (
 --
 
 INSERT INTO `costumers` (`id`, `first_name`, `last_name`, `address`, `email`, `phone_number`) VALUES
-(1, 'Lionel', 'Messi', 'Jl Ulin RT 10 Kel. Sebulu Ulu Kec. Sebulu  Kab. Kutai Kartanegara 75552', 'lionelmessi@barcelona.com', 62929292929),
-(2, 'Cristiano', 'Ronaldo', 'Jl Jati RT 2 Kel. Sebulu Ulu Kec. Sebulu  Kab. Kutai Kartanegara 75552', 'ronaldo@gmail.com', 62112919199);
+(16, 'Yanuar', 'Satria', 'Samarinda', 'yanuarsatria88@gmail.com', '+62 812-4074-1502'),
+(18, 'Daffa', 'Putra', 'Samarinda', 'daffapm.21@gmail.com', '+62 812-4074-1502'),
+(19, 'Risky', 'Kurniawan', 'Kutai Kartanegara', 'riskykurniawan945@gmail.com', '+62 821 5831-7722');
 
 -- --------------------------------------------------------
 
@@ -209,7 +209,102 @@ INSERT INTO `terjual` (`id`, `jenis`, `brand`, `varian`, `warna`, `harga`, `moda
 (62, 'Kili-Kili', 'Pro - Katsu', '3 Mata', 'Putih', 8000, 4000, 1, '2021-04-23-21:54:44'),
 (63, 'Joran', 'Ouster', 'Power Solid', 'Ungu', 135000, 70000, 1, '2021-04-23-22:05:46'),
 (64, 'Hook', 'Sigma', 'Carbon', 'Kuning', 20000, 10000, 5, '2021-04-23-22:05:46'),
-(65, 'Hook', 'Carbon', 'Mix', 'Hitam', 16000, 8200, 2, '2021-04-23-22:05:46');
+(65, 'Hook', 'Carbon', 'Mix', 'Hitam', 16000, 8200, 2, '2021-04-23-22:05:46'),
+(66, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 12000, 7600, 4, '2021-04-25-19:25:12'),
+(67, 'Hook', 'Charm', 'Carbon', 'Hitam', 40000, 20500, 5, '2021-04-25-19:25:12'),
+(68, 'Hook', 'Sigma', 'Carbon', 'Kuning', 12000, 6000, 3, '2021-04-25-19:25:12'),
+(69, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-19:26:46'),
+(70, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 9000, 5700, 3, '2021-04-25-19:27:46'),
+(71, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 6000, 3800, 2, '2021-04-25-19:27:46'),
+(72, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 9000, 5700, 3, '2021-04-25-19:27:46'),
+(73, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-19:30:18'),
+(74, 'Hook', 'Carbon', 'Plus', 'Biru', 14000, 9200, 2, '2021-04-25-19:30:18'),
+(75, 'Hook', 'Carbon', 'Mix', 'Hitam', 8000, 4100, 1, '2021-04-25-20:38:18'),
+(76, 'Hook', 'Charm', 'Carbon', 'Hitam', 40000, 20500, 5, '2021-04-25-20:38:18'),
+(77, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-20:48:20'),
+(78, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-20:49:59'),
+(79, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-20:51:29'),
+(80, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-20:52:57'),
+(81, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-20:54:39'),
+(82, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-20:55:09'),
+(83, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-20:55:09'),
+(84, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-20:55:55'),
+(85, 'Hook', 'Sigma', 'Carbon', 'Kuning', 20000, 10000, 5, '2021-04-25-20:55:55'),
+(86, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-20:57:55'),
+(87, 'Hook', 'Sigma', 'Carbon', 'Kuning', 4000, 2000, 1, '2021-04-25-20:57:55'),
+(88, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-20:59:14'),
+(89, 'Hook', 'Carbon', 'Mix', 'Hitam', 8000, 4100, 1, '2021-04-25-20:59:14'),
+(90, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-20:59:57'),
+(91, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-21:08:50'),
+(92, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 75000, 47500, 25, '2021-04-25-21:09:05'),
+(93, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-21:11:48'),
+(94, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-21:16:17'),
+(95, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-21:18:12'),
+(96, 'Hook', 'Sigma', 'Carbon', 'Kuning', 12000, 6000, 3, '2021-04-25-21:18:12'),
+(97, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-21:22:58'),
+(98, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-21:24:02'),
+(99, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-21:28:33'),
+(100, 'Hook', 'Sigma', 'Carbon', 'Kuning', 20000, 10000, 5, '2021-04-25-21:28:33'),
+(101, 'Hook', 'Carbon', 'Mix', 'Hitam', 8000, 4100, 1, '2021-04-25-21:29:20'),
+(102, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 6000, 3800, 2, '2021-04-25-21:29:20'),
+(103, 'Hook', 'Carbon', 'Plus', 'Biru', 7000, 4600, 1, '2021-04-25-21:29:20'),
+(104, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-21:30:28'),
+(105, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-21:34:46'),
+(106, 'Hook', 'Sigma', 'Carbon', 'Kuning', 4000, 2000, 1, '2021-04-25-21:34:46'),
+(107, 'Hook', 'Carbon', 'Plus', 'Biru', 7000, 4600, 1, '2021-04-25-21:34:46'),
+(108, 'Hook', 'Carbon', 'Mix', 'Hitam', 8000, 4100, 1, '2021-04-25-21:42:07'),
+(109, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-25-21:42:07'),
+(110, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-21:43:58'),
+(111, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 3000, 1900, 1, '2021-04-25-21:44:39'),
+(112, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 9000, 5700, 3, '2021-04-25-21:45:00'),
+(113, 'Hook', 'Carbon', 'Mix', 'Hitam', 8000, 4100, 1, '2021-04-25-21:45:25'),
+(114, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 15000, 9500, 5, '2021-04-26-00:23:36'),
+(115, 'Hook', 'Carbon', 'Plus', 'Biru', 14000, 9200, 2, '2021-04-26-00:23:36'),
+(116, 'Hook', 'Carbon', 'Mix', 'Hitam', 80000, 41000, 10, '2021-04-26-00:23:36'),
+(117, 'Hook', 'Carbon', 'Plus', 'Biru', 14000, 9200, 2, '2021-04-26-00:27:13'),
+(118, 'Hook', 'Charm', 'Carbon', 'Hitam', 40000, 20500, 5, '2021-04-26-00:27:13'),
+(119, 'Hook', 'Sigma', 'Carbon', 'Kuning', 4000, 2000, 1, '2021-04-26-00:27:13'),
+(120, 'Hook', 'Carbon', 'Mix', 'Hitam', 8000, 4100, 1, '2021-04-26-00:27:13'),
+(121, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 9000, 5700, 3, '2021-04-26-20:57:39'),
+(122, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 12000, 7600, 4, '2021-04-26-20:57:39'),
+(123, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 9000, 5700, 3, '2021-04-28-13:54:50'),
+(124, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 6000, 3800, 2, '2021-04-30-10:15:07'),
+(125, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 6000, 3800, 2, '2021-04-30-10:15:07'),
+(126, 'Hook', 'Sigma', 'Carbon', 'Kuning', 20000, 10000, 5, '2021-04-30-11:06:51'),
+(127, 'Hook', 'Charm', 'Carbon', 'Hitam', 20000, 20500, 5, '2021-04-30-11:06:51'),
+(128, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 20000, 9500, 5, '2021-05-05-16:59:37'),
+(129, 'Kili-Kili', 'Golden Glake', '2 Mata', 'Silver', 4000, 4000, 1, '2021-05-05-16:59:37'),
+(130, 'Hook', 'Sigma', 'Carbon', 'Kuning', 12000, 6000, 3, '2021-05-08-23:24:46'),
+(131, 'Hook', 'Sigma', 'Carbon', 'Kuning', 8000, 4000, 2, '2021-05-08-23:26:09'),
+(132, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 12000, 5700, 3, '2021-05-08-23:26:09'),
+(133, 'Hook', 'Sigma', 'Carbon', 'Kuning', 12000, 6000, 3, '2021-05-08-23:27:15'),
+(134, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 12000, 5700, 3, '2021-05-08-23:27:15'),
+(135, 'Hook', 'Charm', 'Carbon', 'Hitam', 8000, 8200, 2, '2021-05-08-23:28:02'),
+(136, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 12000, 5700, 3, '2021-05-08-23:28:02'),
+(137, 'Hook', 'Sigma', 'Carbon', 'Kuning', 8000, 4000, 2, '2021-05-08-23:28:02'),
+(138, 'Hook', 'Sigma', 'Carbon', 'Kuning', 8000, 4000, 2, '2021-05-08-23:28:50'),
+(139, 'Hook', 'Sigma', 'Carbon', 'Kuning', 4000, 2000, 1, '2021-05-08-23:28:50'),
+(140, 'Hook', 'Sigma', 'Carbon', 'Kuning', 12000, 6000, 3, '2021-05-08-23:28:50'),
+(141, 'Hook', 'Sigma', 'Carbon', 'Kuning', 8000, 4000, 2, '2021-05-08-23:28:50'),
+(142, 'Hook', 'Sigma', 'Carbon', 'Kuning', 128000, 64000, 32, '2021-05-08-23:42:04'),
+(143, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 4000, 1900, 1, '2021-05-08-23:44:18'),
+(144, 'Hook', 'Sigma', 'Carbon', 'Kuning', 4000, 2000, 1, '2021-05-08-23:46:43'),
+(145, 'Hook', 'Sigma', 'Carbon', 'Kuning', 4000, 2000, 1, '2021-05-08-23:47:34'),
+(146, 'Hook', 'Sigma', 'Carbon', 'Kuning', 8000, 4000, 2, '2021-05-08-23:47:34'),
+(147, 'Hook', 'Sigma', 'Carbon', 'Kuning', 12000, 6000, 3, '2021-05-08-23:48:01'),
+(148, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 12000, 5700, 3, '2021-05-08-23:48:01'),
+(149, 'Hook', 'Sigma', 'Carbon', 'Kuning', 8000, 4000, 2, '2021-05-08-23:50:37'),
+(150, 'Hook', 'Sigma', 'Carbon', 'Kuning', 8000, 4000, 2, '2021-05-08-23:50:37'),
+(151, 'Hook', 'Charm', 'Carbon', 'Hitam', 4000, 4100, 1, '2021-05-08-23:50:37'),
+(152, 'Hook', 'Sigma', 'Carbon', 'Kuning', 4000, 2000, 1, '2021-05-08-23:55:43'),
+(153, 'Hook', 'Audrey', 'Carbon', 'Darkgrey', 4000, 1900, 1, '2021-05-08-23:55:43'),
+(154, 'Hook', 'Charm', 'Carbon', 'Hitam', 16000, 16400, 4, '2021-05-08-23:55:43'),
+(155, 'Hook', 'Sigma', 'Carbon', 'Kuning', 12000, 6000, 3, '2021-05-11-13:32:47'),
+(156, 'Hook', 'Sigma', 'Carbon', 'Kuning', 8000, 4000, 2, '2021-05-11-13:32:47'),
+(157, 'Hook', 'Sigma', 'Carbon', 'Kuning', 4000, 2000, 1, '2021-05-11-13:32:47'),
+(158, 'Hook', 'Sigma', 'Carbon', 'Kuning', 20000, 10000, 5, '2021-05-11-14:33:12'),
+(159, 'Hook', 'Sigma', 'Carbon', 'Kuning', 20000, 10000, 5, '2021-05-11-14:34:07'),
+(160, 'Hook', 'Sigma', 'Carbon', 'Kuning', 4000, 2000, 1, '2021-05-23-11:02:05');
 
 --
 -- Indexes for dumped tables
@@ -249,13 +344,13 @@ ALTER TABLE `terjual`
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `costumers`
 --
 ALTER TABLE `costumers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -267,7 +362,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `terjual`
 --
 ALTER TABLE `terjual`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
 
 --
 -- Constraints for dumped tables
